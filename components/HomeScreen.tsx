@@ -18,7 +18,7 @@ const hotels = [
     id: '2',
     title: 'California, USA',
     city: 'London, England',
-    img: 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=400',
+    img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400',
     rating: 4.5,
   },
 ];

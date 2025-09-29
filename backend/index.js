@@ -8,15 +8,15 @@ const app = express();
 const port = 3000;
 
 app.use(cors({ origin: '*', methods: ['GET','POST'], allowedHeaders: ['Content-Type'] }));
-
-
 app.use(bodyParser.json());
 
+// Connect DB
 const db = new sqlite3.Database('./database.sqlite', (err) => {
   if (err) console.error('DB Connection Error:', err.message);
   else console.log('Connected to SQLite database.');
 });
 
+// Create table
 db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -52,6 +52,23 @@ app.post('/register', async (req, res) => {
   }
 });
 
+// Login user
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
+
+  db.get('SELECT * FROM users WHERE email = ?', [email], async (err, user) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (!user) return res.status(400).json({ error: 'Invalid email or password' });
+
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) return res.status(400).json({ error: 'Invalid email or password' });
+
+    res.json({ message: 'Login successful', user: { id: user.id, username: user.username, email: user.email } });
+  });
+});
+
+// Fetch user by id
 app.get('/user/:id', (req,res) => {
   db.get('SELECT id, username, email FROM users WHERE id=?', [req.params.id], (err,row) => {
     if(err) return res.status(500).json({ error: err.message });
@@ -60,8 +77,7 @@ app.get('/user/:id', (req,res) => {
   });
 });
 
-
 // Start server
-app.listen(3000, () => {
-  console.log('Server running at http://localhost:3000');
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });

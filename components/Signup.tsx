@@ -7,11 +7,11 @@ import {
   StyleSheet,
   Dimensions,
   Alert,
-  CheckBox,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useRouter } from 'expo-router';
+import Checkbox from 'expo-checkbox';
 
 const { width } = Dimensions.get('window');
 
@@ -110,10 +110,10 @@ export default function RegisterScreen() {
 
       {/* Terms */}
       <View style={styles.checkboxRow}>
-        <CheckBox
+        <Checkbox
           value={accepted}
           onValueChange={setAccepted}
-          tintColors={{ true: '#456EFF', false: '#bbb' }}
+          color={ accepted ? '#456EFF': undefined}
         />
         <Text style={styles.agreeText}>
           I agree to the{' '}
