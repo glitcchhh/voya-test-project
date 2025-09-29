@@ -8,10 +8,11 @@ import {
   Dimensions,
   FlatList,
   StatusBar,
+  Platform,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const onboardingData = [
   {
@@ -19,35 +20,36 @@ const onboardingData = [
     title: 'Find Your Perfect Stay,\nAnytime, Anywhere',
     description: 'Lorem ipsum dolor sit amet consectetur.\nLectus dictum ut nunc sodales a. Nibh\ntortor malesuada amet',
     images: [
-      'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=400',
-      'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=400',
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
+      'https://images.unsplash.com/photo-1509130446498-104dcb6e2b88?w=600',
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600',
+      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600',
     ],
   },
-
   {
     id: '2',
     title: 'Book Your Dream Hotel in Just a Tap',
     description: 'Lorem ipsum dolor sit amet consectetur.\nLectus dictum ut nunc sodales a. Nibh\ntortor malesuada amet',
     images: [
-        'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=400',
-        'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=400',
-        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
+      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600',
+      'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?w=600',
+      'https://images.unsplash.com/photo-1468071174046-657d9d351a40?w=600',
     ],
   },
-
   {
     id: '3',
     title: 'Relax and enjoy your trip with Voya',
     description: 'Lorem ipsum dolor sit amet consectetur.\nLectus dictum ut nunc sodales a. Nibh\ntortor malesuada amet',
     images: [
-        'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=400',
-        'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=400',
-        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
+      'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?w=600',
+      'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?w=600',
+      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600',
     ],
   },
-  // Add more slides here if needed
 ];
+
+const IMAGE_HEIGHT = height * 0.33;
+const PILL_WIDTH = (width * 0.75) / 3;
+const PILL_SPACING = 16;
 
 const OnboardingScreen = () => {
   const router = useRouter();
@@ -55,7 +57,7 @@ const OnboardingScreen = () => {
   const flatListRef = useRef<FlatList>(null);
 
   const handleSkip = () => {
-    router.replace('/(tabs)');
+    router.replace('/register');
   };
 
   const handleNext = () => {
@@ -65,7 +67,7 @@ const OnboardingScreen = () => {
         animated: true,
       });
     } else {
-      router.replace('/(tabs)');
+      router.replace('/register');
     }
   };
 
@@ -77,20 +79,19 @@ const OnboardingScreen = () => {
 
   const renderItem = ({ item }: any) => (
     <View style={styles.slide}>
-      <View style={styles.imagesContainer}>
-        {(item.images ?? []).map((img: string, index: number) => (
+      <View style={styles.pillImageRow}>
+        {item.images.map((img: string, idx: number) => (
           <View
-            key={index}
+            key={idx}
             style={[
-              styles.imageWrapper,
-              index === 1 && styles.centerImage,
+              styles.pillWrapper,
+              idx === 1 && styles.middlePill,
             ]}
           >
-            <Image source={{ uri: img }} style={styles.image} />
+            <Image source={{ uri: img }} style={styles.pillImage} />
           </View>
         ))}
       </View>
-
       <View style={styles.textContainer}>
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.description}>{item.description}</Text>
@@ -101,7 +102,6 @@ const OnboardingScreen = () => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-
       <FlatList
         ref={flatListRef}
         data={onboardingData}
@@ -111,26 +111,29 @@ const OnboardingScreen = () => {
         showsHorizontalScrollIndicator={false}
         onViewableItemsChanged={onViewableItemsChanged}
         viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
+        getItemLayout={(_, index) => ({
+          length: width,
+          offset: width * index,
+          index,
+        })}
+        style={styles.flatList}
       />
-
       <View style={styles.footer}>
         <TouchableOpacity onPress={handleSkip}>
           <Text style={styles.skipText}>Skip</Text>
         </TouchableOpacity>
-
         <View style={styles.pagination}>
-          {onboardingData.map((_, index) => (
+          {onboardingData.map((_, idx) => (
             <View
-              key={index}
+              key={idx}
               style={[
                 styles.dot,
-                currentIndex === index && styles.activeDot,
+                currentIndex === idx && styles.activeDot,
               ]}
             />
           ))}
         </View>
-
         <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
           <Text style={styles.arrow}>→</Text>
         </TouchableOpacity>
@@ -142,90 +145,101 @@ const OnboardingScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#fff',
+  },
+  flatList: {
+    flexGrow: 0,
   },
   slide: {
     width,
-    flex: 1,
-    paddingTop: 60,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    paddingTop: Platform.OS === 'web' ? 56 : 44,
   },
-  imagesContainer: {
+  pillImageRow: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    marginBottom: 40,
-    gap: 12,
+    alignItems: 'flex-end',
+    marginTop: 12,
+    marginBottom: 32,
+    gap: PILL_SPACING,
   },
-  imageWrapper: {
-    width: width * 0.27,
-    height: 320,
-    borderRadius: 20,
+  pillWrapper: {
+    width: PILL_WIDTH,
+    height: IMAGE_HEIGHT,
+    borderRadius: 28,
     overflow: 'hidden',
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#eef2f5',
   },
-  centerImage: {
-    marginTop: -20,
+  middlePill: {
+    marginTop: -12,
   },
-  image: {
+  pillImage: {
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
   },
   textContainer: {
-    paddingHorizontal: 30,
+    marginTop: 0,
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 28,
   },
   title: {
-    fontSize: 24,
-    fontWeight: '600',
+    fontSize: width > 400 ? 22 : 19,
+    fontWeight: '700',
     textAlign: 'center',
-    color: '#000',
     marginBottom: 16,
-    lineHeight: 32,
+    color: '#181818',
+    lineHeight: width > 400 ? 32 : 28,
   },
   description: {
-    fontSize: 14,
+    fontSize: width > 400 ? 15 : 13,
     textAlign: 'center',
-    color: '#666',
-    lineHeight: 22,
+    color: '#888',
+    lineHeight: width > 400 ? 23 : 19,
   },
   footer: {
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 30,
-    paddingBottom: 40,
+    paddingHorizontal: 28,
+    paddingBottom: Platform.OS === 'web' ? 36 : 28,
+    marginTop: 0,
   },
   skipText: {
-    fontSize: 16,
-    color: '#666',
+    fontSize: width > 400 ? 16 : 14,
+    color: '#888',
   },
   pagination: {
     flexDirection: 'row',
     gap: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   dot: {
-    width: 30,
+    width: 22,
     height: 6,
-    borderRadius: 3,
-    backgroundColor: '#E0E0E0',
+    borderRadius: 4,
+    backgroundColor: '#e3e9f4',
   },
   activeDot: {
     backgroundColor: '#4169E1',
   },
   nextButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     backgroundColor: '#4169E1',
     justifyContent: 'center',
     alignItems: 'center',
   },
   arrow: {
-    fontSize: 24,
+    fontSize: 23,
     color: '#fff',
-    fontWeight: '600',
+    fontWeight: 'bold',
+    marginTop: -3,
   },
 });
 

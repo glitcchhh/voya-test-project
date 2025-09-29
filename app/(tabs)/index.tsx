@@ -11,7 +11,7 @@ export default function Index() {
     // Show splash screen for 2.5 seconds
     const timer = setTimeout(() => {
       setIsLoading(false);
-      // Navigate to your main tab screen
+      // Navigate to main tab screen
       router.replace('/(tabs)');
     }, 2500);
 
