@@ -3,32 +3,43 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, FlatList, D
 import Icon from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import RNPickerSelect from 'react-native-picker-select';
+import { useNavigation } from '@react-navigation/native'; // <-- Import navigation
+import { usePathname } from 'expo-router';
+import { useRouter } from 'expo-router';
 
 const { width } = Dimensions.get('window');
 
 const hotels = [
-  {
-    id: '1',
-    title: 'Elysium Gardens',
-    city: 'London, England',
-    img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400',
-    rating: 4.5,
-  },
-  {
-    id: '2',
-    title: 'California, USA',
-    city: 'London, England',
-    img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400',
-    rating: 4.5,
-  },
+  { id: '1', title: 'Elysium Gardens', city: 'London, England', img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400', rating: 4.5 },
+  { id: '2', title: 'California, USA', city: 'London, England', img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400', rating: 4.5 },
 ];
 
 export default function HomeScreen() {
+  const router = useRouter(); // <-- Hook for navigation
+
   const [location, setLocation] = useState('London, England');
-  const [checkIn, setCheckIn] = useState('20/07/25');
-  const [checkOut, setCheckOut] = useState('26/07/25');
-  const [guests, setGuests] = useState('1 Guest');
-  const [rooms, setRooms] = useState('1 Room');
+  const [checkIn, setCheckIn] = useState(null);
+  const [checkOut, setCheckOut] = useState(null);
+  const [guests, setGuests] = useState('1');
+  const [rooms, setRooms] = useState('1');
+  
+  const [showCheckInPicker, setShowCheckInPicker] = useState(false);
+  const [showCheckOutPicker, setShowCheckOutPicker] = useState(false);
+
+  const formatDate = (date) => {
+    if (!date) return '';
+    const d = new Date(date);
+    return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+  };
+
+  const handleHotelPress = () => {
+    router.push('/hoteldetails'); 
+};
+
+
+
 
   return (
     <View style={styles.container}>
@@ -37,16 +48,17 @@ export default function HomeScreen() {
         <Image source={{ uri: 'https://randomuser.me/api/portraits/men/32.jpg' }} style={styles.avatar} />
         <View style={{ flex: 1, marginLeft: 10 }}>
           <Text style={styles.locText}>Find events near</Text>
-          <Text style={styles.locRegion}>California, USA</Text>
+          <Text style={styles.locRegion}>{location}</Text>
         </View>
         <TouchableOpacity>
           <Icon name="bell" size={22} color="#373737" />
         </TouchableOpacity>
       </View>
+
       {/* Search card */}
       <View style={styles.searchCard}>
         <View style={styles.inputBox}>
-          <Icon name="mail" size={18} color="#B2B2B2" style={styles.inputIcon} />
+          <Icon name="map-pin" size={18} color="#B2B2B2" style={styles.inputIcon} />
           <TextInput
             style={styles.input}
             value={location}
@@ -55,54 +67,66 @@ export default function HomeScreen() {
             placeholderTextColor="#B2B2B2"
           />
         </View>
+
         <View style={styles.gridRow}>
-          <View style={styles.smallInputBox}>
+          <TouchableOpacity
+            style={styles.smallInputBox}
+            onPress={() => setShowCheckInPicker(true)}
+          >
             <Icon name="calendar" size={17} color="#B2B2B2" style={styles.inputIcon} />
-            <TextInput
-              style={styles.input}
-              value={checkIn}
-              onChangeText={setCheckIn}
-              placeholder="Check in"
-              placeholderTextColor="#B2B2B2"
-            />
-          </View>
-          <View style={styles.smallInputBox}>
+            <Text style={styles.input}>{checkIn ? formatDate(checkIn) : 'Check in'}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.smallInputBox}
+            onPress={() => setShowCheckOutPicker(true)}
+          >
             <Icon name="calendar" size={17} color="#B2B2B2" style={styles.inputIcon} />
-            <TextInput
-              style={styles.input}
-              value={checkOut}
-              onChangeText={setCheckOut}
-              placeholder="Check out"
-              placeholderTextColor="#B2B2B2"
-            />
-          </View>
+            <Text style={styles.input}>{checkOut ? formatDate(checkOut) : 'Check out'}</Text>
+          </TouchableOpacity>
         </View>
+
+        <DateTimePickerModal
+          isVisible={showCheckInPicker}
+          mode="date"
+          onConfirm={(date) => { setCheckIn(date); setShowCheckInPicker(false); }}
+          onCancel={() => setShowCheckInPicker(false)}
+        />
+        <DateTimePickerModal
+          isVisible={showCheckOutPicker}
+          mode="date"
+          onConfirm={(date) => { setCheckOut(date); setShowCheckOutPicker(false); }}
+          onCancel={() => setShowCheckOutPicker(false)}
+        />
+
         <View style={styles.gridRow}>
           <View style={styles.smallInputBox}>
             <Icon name="user" size={17} color="#B2B2B2" style={styles.inputIcon} />
-            <TextInput
-              style={styles.input}
+            <RNPickerSelect
+              onValueChange={setGuests}
               value={guests}
-              onChangeText={setGuests}
-              placeholder="Guest"
-              placeholderTextColor="#B2B2B2"
+              style={{ inputAndroid: { color: '#232323', fontSize: 15 }, inputIOS: { color: '#232323', fontSize: 15 } }}
+              items={Array.from({ length: 10 }, (_, i) => ({ label: `${i + 1} Guest`, value: `${i + 1}` }))}
+              placeholder={{}}
             />
           </View>
           <View style={styles.smallInputBox}>
             <MaterialCommunityIcons name="bed-empty" size={17} color="#B2B2B2" style={styles.inputIcon} />
-            <TextInput
-              style={styles.input}
+            <RNPickerSelect
+              onValueChange={setRooms}
               value={rooms}
-              onChangeText={setRooms}
-              placeholder="Room"
-              placeholderTextColor="#B2B2B2"
+              style={{ inputAndroid: { color: '#232323', fontSize: 15 }, inputIOS: { color: '#232323', fontSize: 15 } }}
+              items={Array.from({ length: 20 }, (_, i) => ({ label: `${i + 1} Room`, value: `${i + 1}` }))}
+              placeholder={{}}
             />
           </View>
         </View>
+
         <TouchableOpacity style={styles.findButton}>
           <Text style={styles.findButtonText}>Find Hotel</Text>
         </TouchableOpacity>
       </View>
+
       {/* Popular Hotel Section */}
       <View style={styles.popularHeader}>
         <Text style={styles.popularText}>Popular Hotel</Text>
@@ -110,6 +134,7 @@ export default function HomeScreen() {
           <Text style={styles.viewAllText}>View All</Text>
         </TouchableOpacity>
       </View>
+
       <FlatList
         data={hotels}
         horizontal
@@ -117,7 +142,7 @@ export default function HomeScreen() {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.hotelList}
         renderItem={({ item }) => (
-          <View style={styles.hotelCard}>
+          <TouchableOpacity style={styles.hotelCard} onPress={() => handleHotelPress(item)}>
             <Image source={{ uri: item.img }} style={styles.hotelImg} />
             <View style={styles.starBox}>
               <FontAwesome name="star" size={15} color="#FFD600" />
@@ -125,9 +150,10 @@ export default function HomeScreen() {
             </View>
             <Text style={styles.hotelTitle}>{item.title}</Text>
             <Text style={styles.hotelSubtitle}>{item.city}</Text>
-          </View>
+          </TouchableOpacity>
         )}
       />
+
       {/* Bottom Tab Bar */}
       <View style={styles.tabBar}>
         <TouchableOpacity style={styles.tabBarItem}>
@@ -146,7 +172,8 @@ export default function HomeScreen() {
       </View>
     </View>
   );
-}
+};
+
 
 const CARD_RADIUS = 18;
 const INPUT_HEIGHT = 44;
