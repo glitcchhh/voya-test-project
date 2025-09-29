@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
+  Alert,
   CheckBox,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
@@ -22,6 +23,34 @@ export default function RegisterScreen() {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [accepted, setAccepted] = useState(false);
 
+  // Funct to register 
+  const handleRegister = async () => {
+    if (!username || !email || !password) {
+      Alert.alert('Error', 'Please fill all fields');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://192.168.1.8:3000/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        Alert.alert('Success', `User registered with ID: ${data.id}`);
+        router.replace('/home'); // Nav to home 
+      } else {
+        Alert.alert('Error', data.error || 'Registration failed');
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Could not connect to server');
+    }
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.backArrow} onPress={() => router.back()}>
@@ -29,6 +58,8 @@ export default function RegisterScreen() {
       </TouchableOpacity>
       <Text style={styles.header}>Let’s Get Started</Text>
       <Text style={styles.subheader}>Create an account to continue.</Text>
+
+      {/* Username */}
       <View style={styles.inputBox}>
         <Icon name="user" size={18} color="#B2B2B2" style={styles.inputIcon} />
         <TextInput
@@ -39,6 +70,8 @@ export default function RegisterScreen() {
           placeholderTextColor="#B2B2B2"
         />
       </View>
+
+      {/* Email */}
       <View style={styles.inputBox}>
         <Icon name="mail" size={18} color="#B2B2B2" style={styles.inputIcon} />
         <TextInput
@@ -51,6 +84,8 @@ export default function RegisterScreen() {
           autoCapitalize="none"
         />
       </View>
+
+      {/* Password */}
       <View style={styles.inputBox}>
         <Icon name="lock" size={18} color="#B2B2B2" style={styles.inputIcon} />
         <TextInput
@@ -72,6 +107,8 @@ export default function RegisterScreen() {
           />
         </TouchableOpacity>
       </View>
+
+      {/* Terms */}
       <View style={styles.checkboxRow}>
         <CheckBox
           value={accepted}
@@ -84,15 +121,17 @@ export default function RegisterScreen() {
           <Text style={styles.linkText}>Privacy Policy</Text>
         </Text>
       </View>
+
+      {/* Register Button */}
       <TouchableOpacity
-        style={[
-          styles.registerButton,
-          { opacity: accepted ? 1 : 0.6 },
-        ]}
+        style={[styles.registerButton, { opacity: accepted ? 1 : 0.6 }]}
         disabled={!accepted}
+        onPress={handleRegister}
       >
-        <Text style={styles.registerButtonText} onPress={() => router.replace('/home')}>Register</Text>
+        <Text style={styles.registerButtonText}>Register</Text>
       </TouchableOpacity>
+
+      {/* Social login & bottom text remain unchanged */}
       <View style={styles.orRow}>
         <View style={styles.divider} />
         <Text style={styles.orText}>Or</Text>
@@ -110,16 +149,14 @@ export default function RegisterScreen() {
       </View>
       <Text style={styles.bottomText}>
         Already have an account?{' '}
-        <Text
-          style={styles.loginLink}
-          onPress={() => router.replace('/home')}
-        >
+        <Text style={styles.loginLink} onPress={() => router.replace('/home')}>
           Log In
         </Text>
       </Text>
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

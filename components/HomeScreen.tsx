@@ -1,22 +1,12 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  TextInput,
-  FlatList,
-  Dimensions,
-  ScrollView,
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, FlatList, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const { width } = Dimensions.get('window');
 
-const dummyHotels = [
+const hotels = [
   {
     id: '1',
     title: 'Elysium Gardens',
@@ -44,12 +34,7 @@ export default function HomeScreen() {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.headerRow}>
-        <View style={styles.avatarWrapper}>
-          <Image
-            source={{ uri: 'https://randomuser.me/api/portraits/men/32.jpg' }}
-            style={styles.avatar}
-          />
-        </View>
+        <Image source={{ uri: 'https://randomuser.me/api/portraits/men/32.jpg' }} style={styles.avatar} />
         <View style={{ flex: 1, marginLeft: 10 }}>
           <Text style={styles.locText}>Find events near</Text>
           <Text style={styles.locRegion}>California, USA</Text>
@@ -58,34 +43,33 @@ export default function HomeScreen() {
           <Icon name="bell" size={22} color="#373737" />
         </TouchableOpacity>
       </View>
-
-      {/* Search Card */}
+      {/* Search card */}
       <View style={styles.searchCard}>
-        <View style={styles.inputRow}>
-          <Icon name="mail" size={18} color="#B2B2B2" />
+        <View style={styles.inputBox}>
+          <Icon name="mail" size={18} color="#B2B2B2" style={styles.inputIcon} />
           <TextInput
-            style={styles.inputText}
+            style={styles.input}
             value={location}
             onChangeText={setLocation}
             placeholder="Location"
             placeholderTextColor="#B2B2B2"
           />
         </View>
-        <View style={styles.inputDuoRow}>
-          <View style={styles.duoInput}>
-            <Icon name="calendar" size={17} color="#B2B2B2" />
+        <View style={styles.gridRow}>
+          <View style={styles.smallInputBox}>
+            <Icon name="calendar" size={17} color="#B2B2B2" style={styles.inputIcon} />
             <TextInput
-              style={styles.inputText}
+              style={styles.input}
               value={checkIn}
               onChangeText={setCheckIn}
               placeholder="Check in"
               placeholderTextColor="#B2B2B2"
             />
           </View>
-          <View style={styles.duoInput}>
-            <Icon name="calendar" size={17} color="#B2B2B2" />
+          <View style={styles.smallInputBox}>
+            <Icon name="calendar" size={17} color="#B2B2B2" style={styles.inputIcon} />
             <TextInput
-              style={styles.inputText}
+              style={styles.input}
               value={checkOut}
               onChangeText={setCheckOut}
               placeholder="Check out"
@@ -93,21 +77,21 @@ export default function HomeScreen() {
             />
           </View>
         </View>
-        <View style={styles.inputDuoRow}>
-          <View style={styles.duoInput}>
-            <Icon name="user" size={17} color="#B2B2B2" />
+        <View style={styles.gridRow}>
+          <View style={styles.smallInputBox}>
+            <Icon name="user" size={17} color="#B2B2B2" style={styles.inputIcon} />
             <TextInput
-              style={styles.inputText}
+              style={styles.input}
               value={guests}
               onChangeText={setGuests}
               placeholder="Guest"
               placeholderTextColor="#B2B2B2"
             />
           </View>
-          <View style={styles.duoInput}>
-            <MaterialIcons name="meeting-room" size={17} color="#B2B2B2" />
+          <View style={styles.smallInputBox}>
+            <MaterialCommunityIcons name="bed-empty" size={17} color="#B2B2B2" style={styles.inputIcon} />
             <TextInput
-              style={styles.inputText}
+              style={styles.input}
               value={rooms}
               onChangeText={setRooms}
               placeholder="Room"
@@ -119,7 +103,6 @@ export default function HomeScreen() {
           <Text style={styles.findButtonText}>Find Hotel</Text>
         </TouchableOpacity>
       </View>
-
       {/* Popular Hotel Section */}
       <View style={styles.popularHeader}>
         <Text style={styles.popularText}>Popular Hotel</Text>
@@ -128,222 +111,225 @@ export default function HomeScreen() {
         </TouchableOpacity>
       </View>
       <FlatList
-        data={dummyHotels}
+        data={hotels}
         horizontal
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         showsHorizontalScrollIndicator={false}
-        style={{ marginBottom: 7 }}
-        contentContainerStyle={{ paddingHorizontal: 10 }}
+        contentContainerStyle={styles.hotelList}
         renderItem={({ item }) => (
           <View style={styles.hotelCard}>
-            <Image
-              source={{ uri: item.img }}
-              style={styles.hotelImg}
-            />
-            <View style={styles.ratingBox}>
-              <FontAwesome name="star" color="#F5C443" size={14} />
-              <Text style={styles.hotelRating}>{item.rating}</Text>
+            <Image source={{ uri: item.img }} style={styles.hotelImg} />
+            <View style={styles.starBox}>
+              <FontAwesome name="star" size={15} color="#FFD600" />
+              <Text style={styles.starLabel}>{item.rating}</Text>
             </View>
             <Text style={styles.hotelTitle}>{item.title}</Text>
-            <Text style={styles.hotelCity}>{item.city}</Text>
+            <Text style={styles.hotelSubtitle}>{item.city}</Text>
           </View>
         )}
       />
-
-      {/* Bottom Tab Bar (demo, remove if handled by your router/layout) */}
+      {/* Bottom Tab Bar */}
       <View style={styles.tabBar}>
-        <TouchableOpacity style={styles.tabBarBtn}>
-          <Icon name="home" size={22} color="#4169E1" />
+        <TouchableOpacity style={styles.tabBarItem}>
+          <Icon name="home" size={20} color="#4169E1" />
           <Text style={styles.tabLabelActive}>Home</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.tabBarBtn}>
-          <Icon name="calendar" size={22} color="#B2B2B2" />
+        <TouchableOpacity style={styles.tabBarItem}>
+          <Icon name="calendar" size={20} color="#C7C7C7" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.tabBarBtn}>
-          <Icon name="heart" size={22} color="#B2B2B2" />
+        <TouchableOpacity style={styles.tabBarItem}>
+          <Icon name="heart" size={20} color="#C7C7C7" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.tabBarBtn}>
-          <Icon name="user" size={22} color="#B2B2B2" />
+        <TouchableOpacity style={styles.tabBarItem}>
+          <Icon name="user" size={20} color="#C7C7C7" />
         </TouchableOpacity>
       </View>
     </View>
   );
 }
 
-const S = 15;
+const CARD_RADIUS = 18;
+const INPUT_HEIGHT = 44;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: 38,
+    paddingTop: 40,
   },
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
-    marginBottom: 8,
+    marginBottom: 9,
   },
-  avatarWrapper: {
+  avatar: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    overflow: 'hidden',
-    borderColor: '#eee',
     borderWidth: 1,
-    marginRight: 3,
-  },
-  avatar: {
-    width: '100%',
-    height: '100%',
+    borderColor: '#eaeaea',
+    marginRight: 5,
   },
   locText: {
     fontSize: 13,
-    color: '#7C7C7C',
+    color: '#818181',
+    marginBottom: 1,
+    letterSpacing: 0.1
   },
   locRegion: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#222',
+    fontWeight: '700',
+    color: '#232323',
   },
   searchCard: {
-    backgroundColor: '#fbfbfd',
-    borderRadius: 20,
-    marginHorizontal: 14,
-    paddingHorizontal: 20,
+    backgroundColor: '#F6F8FC',
+    borderRadius: CARD_RADIUS,
+    marginHorizontal: 16,
+    paddingHorizontal: 16,
     paddingVertical: 16,
-    marginBottom: 15,
-    shadowColor: '#edf2f9',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 10,
+    marginBottom: 18,
     elevation: 2,
+    shadowColor: '#c2cdf7',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.07,
+    shadowRadius: 12,
   },
-  inputRow: {
+  inputBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f6f8fc',
-    borderRadius: 15,
-    paddingHorizontal: 13,
-    marginBottom: S,
-    height: 43,
+    backgroundColor: '#fff',
+    borderRadius: CARD_RADIUS,
+    height: INPUT_HEIGHT,
+    paddingHorizontal: 14,
+    marginBottom: 14,
   },
-  inputDuoRow: {
-    flexDirection: 'row',
-    gap: 8,
-    marginBottom: S,
-  },
-  duoInput: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#f6f8fc',
-    borderRadius: 15,
-    paddingHorizontal: 13,
+  smallInputBox: {
     flex: 1,
-    height: 43,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: CARD_RADIUS,
+    height: INPUT_HEIGHT,
+    paddingHorizontal: 14,
+    marginRight: 6,
+    marginBottom: 0,
   },
-  inputText: {
+  inputIcon: {
+    marginRight: 8,
+  },
+  input: {
     flex: 1,
     fontSize: 15,
-    color: '#222',
-    marginLeft: 6,
+    color: '#232323',
+    padding: 0,
+  },
+  gridRow: {
+    flexDirection: 'row',
+    marginBottom: 13,
   },
   findButton: {
-    backgroundColor: '#456EFF',
+    backgroundColor: '#4169E1',
     borderRadius: 24,
+    height: 48,
     alignItems: 'center',
-    paddingVertical: 14,
-    marginTop: 11,
-    marginBottom: 4,
+    justifyContent: 'center',
+    marginTop: 3,
+    marginBottom: 1,
   },
   findButtonText: {
+    fontSize: 16,
     color: '#fff',
-    fontWeight: '600',
-    fontSize: 17,
+    fontWeight: '700',
   },
   popularHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    paddingHorizontal: 19,
-    marginBottom: 7,
+    paddingHorizontal: 18,
+    alignItems: 'center',
+    marginBottom: 6,
   },
   popularText: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#181818',
+    color: '#202020',
   },
   viewAllText: {
-    color: '#456EFF',
     fontSize: 15,
+    color: '#4169E1',
     fontWeight: '600',
   },
+  hotelList: {
+    paddingLeft: 17,
+    paddingRight: 1,
+    marginBottom: 6,
+  },
   hotelCard: {
-    width: 170,
+    width: 151,
+    marginRight: 15,
+    borderRadius: 15,
     backgroundColor: '#fff',
-    borderRadius: 17,
-    marginRight: 12,
-    padding: 7,
-    shadowColor: '#eee',
+    shadowColor: '#ccc',
     shadowOffset: { width: 1, height: 2 },
-    shadowOpacity: 0.10,
+    shadowOpacity: 0.13,
     shadowRadius: 6,
     elevation: 1,
+    paddingBottom: 7,
+    paddingHorizontal: 7,
+    marginBottom: 4,
   },
   hotelImg: {
     width: '100%',
-    height: 95,
-    borderRadius: 14,
-    marginBottom: 6,
+    height: 87,
+    borderRadius: 12,
+    marginBottom: 8,
+    marginTop: 8,
   },
-  ratingBox: {
-    flexDirection: 'row',
+  starBox: {
     position: 'absolute',
-    top: 12,
+    top: 16,
     left: 13,
     backgroundColor: '#fff',
+    borderRadius: 10,
     paddingHorizontal: 7,
     paddingVertical: 2,
-    borderRadius: 13,
+    flexDirection: 'row',
     alignItems: 'center',
-    shadowColor: '#eee',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.08,
-    shadowRadius: 3,
-    elevation: 1,
+    elevation: 2,
   },
-  hotelRating: {
-    marginLeft: 3,
-    fontSize: 12,
-    color: '#222',
+  starLabel: {
+    marginLeft: 4,
     fontWeight: '700',
+    fontSize: 13,
+    color: '#202020',
   },
   hotelTitle: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#232323',
-    marginTop: 9,
+    color: '#222',
+    marginTop: 8,
+    marginBottom: 2,
+    letterSpacing: 0.1,
   },
-  hotelCity: {
-    fontSize: 12,
-    color: '#A3A3A3',
-    marginBottom: 3,
-    marginTop: 1,
+  hotelSubtitle: {
+    fontSize: 13,
+    color: '#919191',
   },
   tabBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 8,
     borderTopWidth: 1,
-    borderTopColor: '#ededed',
-    paddingHorizontal: 32,
+    borderTopColor: '#ececec',
     backgroundColor: '#fff',
     position: 'absolute',
     left: 0,
     right: 0,
     bottom: 0,
+    paddingHorizontal: 36,
     height: 58,
+    alignItems: 'center',
+    zIndex: 99,
   },
-  tabBarBtn: {
+  tabBarItem: {
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
@@ -353,5 +339,5 @@ const styles = StyleSheet.create({
     color: '#4169E1',
     fontWeight: '600',
     marginTop: 2,
-  }
+  },
 });
