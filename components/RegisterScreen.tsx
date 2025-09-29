@@ -1,11 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
 
-export default function RegisterScreen({ navigation }: any) {
+export default function RegisterScreen() {
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80' }} // Replace with your asset
+        source={{ uri: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80' }}
         style={styles.headerImage}
         resizeMode="cover"
       />
@@ -17,12 +20,12 @@ export default function RegisterScreen({ navigation }: any) {
         <Text style={styles.subtitle}>
           Lorem ipsum dolor sit amet consectetur. Lectus dictum ut nunc sodales a. Nibh tortor malesuada amet
         </Text>
-        <TouchableOpacity style={styles.registerButton}>
+        <TouchableOpacity style={styles.registerButton} onPress={() => router.replace('/signup')}>
           <Text style={styles.registerButtonText}>Register</Text>
         </TouchableOpacity>
         <Text style={styles.footerText}>
           Already have an account?{' '}
-          <Text style={styles.loginText} onPress={() => navigation.navigate('Login')}>Log In</Text>
+          <Text style={styles.loginText} onPress={() => router.push('/login')}>Log In</Text>
         </Text>
       </View>
     </View>
