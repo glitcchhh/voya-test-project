@@ -149,7 +149,7 @@ export default function RegisterScreen() {
       </View>
       <Text style={styles.bottomText}>
         Already have an account?{' '}
-        <Text style={styles.loginLink} onPress={() => router.replace('/home')}>
+        <Text style={styles.loginLink} onPress={() => router.replace('/login')}>
           Log In
         </Text>
       </Text>
