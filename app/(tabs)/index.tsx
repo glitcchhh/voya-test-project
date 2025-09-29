@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
 import SplashScreen from '../../components/SplashScreen';
+import OnboardingScreen from '@/components/OnboardingScreen';
 
 export default function Index() {
   const [isLoading, setIsLoading] = useState(true);
@@ -21,5 +22,5 @@ export default function Index() {
     return <SplashScreen />;
   }
 
-  return null;
+  return <OnboardingScreen/>;
 }

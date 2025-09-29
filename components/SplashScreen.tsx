@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     letterSpacing: -1,
   },
   vText: {
-    color: '#4169E1',
+    color: '#4169E1', // Royal blue color
   },
   oyaText: {
     color: '#000000',
