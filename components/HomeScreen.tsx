@@ -3,11 +3,9 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, FlatList, D
 import Icon from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import RNPickerSelect from 'react-native-picker-select';
-import { useNavigation } from '@react-navigation/native'; // <-- Import navigation
-import { usePathname } from 'expo-router';
 import { useRouter } from 'expo-router';
+import CalendarModal from './ui/CalenderModal'; // Adjust this path as needed
 
 const { width } = Dimensions.get('window');
 
@@ -17,29 +15,26 @@ const hotels = [
 ];
 
 export default function HomeScreen() {
-  const router = useRouter(); // <-- Hook for navigation
+  const router = useRouter();
 
   const [location, setLocation] = useState('London, England');
-  const [checkIn, setCheckIn] = useState(null);
-  const [checkOut, setCheckOut] = useState(null);
+  const [checkIn, setCheckIn] = useState<string | undefined>();
+  const [checkOut, setCheckOut] = useState<string | undefined>();
   const [guests, setGuests] = useState('1');
   const [rooms, setRooms] = useState('1');
-  
-  const [showCheckInPicker, setShowCheckInPicker] = useState(false);
-  const [showCheckOutPicker, setShowCheckOutPicker] = useState(false);
 
-  const formatDate = (date) => {
-    if (!date) return '';
-    const d = new Date(date);
+  const [showCheckInModal, setShowCheckInModal] = useState(false);
+  const [showCheckOutModal, setShowCheckOutModal] = useState(false);
+
+  const formatDate = (iso?: string) => {
+    if (!iso) return '';
+    const d = new Date(iso);
     return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
   };
 
   const handleHotelPress = () => {
-    router.push('/hoteldetails'); 
-};
-
-
-
+    router.push('/hoteldetails');
+  };
 
   return (
     <View style={styles.container}>
@@ -71,7 +66,7 @@ export default function HomeScreen() {
         <View style={styles.gridRow}>
           <TouchableOpacity
             style={styles.smallInputBox}
-            onPress={() => setShowCheckInPicker(true)}
+            onPress={() => setShowCheckInModal(true)}
           >
             <Icon name="calendar" size={17} color="#B2B2B2" style={styles.inputIcon} />
             <Text style={styles.input}>{checkIn ? formatDate(checkIn) : 'Check in'}</Text>
@@ -79,24 +74,29 @@ export default function HomeScreen() {
 
           <TouchableOpacity
             style={styles.smallInputBox}
-            onPress={() => setShowCheckOutPicker(true)}
+            onPress={() => setShowCheckOutModal(true)}
           >
             <Icon name="calendar" size={17} color="#B2B2B2" style={styles.inputIcon} />
             <Text style={styles.input}>{checkOut ? formatDate(checkOut) : 'Check out'}</Text>
           </TouchableOpacity>
         </View>
 
-        <DateTimePickerModal
-          isVisible={showCheckInPicker}
-          mode="date"
-          onConfirm={(date) => { setCheckIn(date); setShowCheckInPicker(false); }}
-          onCancel={() => setShowCheckInPicker(false)}
+        {/* Calendar Modals */}
+        <CalendarModal
+          visible={showCheckInModal}
+          onClose={() => setShowCheckInModal(false)}
+          onDateSelect={date => { setCheckIn(date); setShowCheckInModal(false); }}
+          selectedDate={checkIn}
+          title="Select Check-in Date"
+          initialMonth={checkIn ? checkIn.slice(0, 7) : undefined}
         />
-        <DateTimePickerModal
-          isVisible={showCheckOutPicker}
-          mode="date"
-          onConfirm={(date) => { setCheckOut(date); setShowCheckOutPicker(false); }}
-          onCancel={() => setShowCheckOutPicker(false)}
+        <CalendarModal
+          visible={showCheckOutModal}
+          onClose={() => setShowCheckOutModal(false)}
+          onDateSelect={date => { setCheckOut(date); setShowCheckOutModal(false); }}
+          selectedDate={checkOut}
+          title="Select Check-out Date"
+          initialMonth={checkOut ? checkOut.slice(0, 7) : (checkIn ? checkIn.slice(0, 7) : undefined)}
         />
 
         <View style={styles.gridRow}>
@@ -172,8 +172,7 @@ export default function HomeScreen() {
       </View>
     </View>
   );
-};
-
+}
 
 const CARD_RADIUS = 18;
 const INPUT_HEIGHT = 44;
