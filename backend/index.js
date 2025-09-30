@@ -16,28 +16,30 @@ const db = new sqlite3.Database('./database.sqlite', (err) => {
   else console.log('Connected to SQLite database.');
 });
 
-// Create tables
+// Create tables if not exist
 db.serialize(() => {
-  // Users table
-  db.run(`CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT NOT NULL,
-    email TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL
-  )`);
+  db.run(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      username TEXT NOT NULL,
+      email TEXT NOT NULL UNIQUE,
+      password TEXT NOT NULL
+    )
+  `);
 
-  // Bookings table
-  db.run(`CREATE TABLE IF NOT EXISTS bookings (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    userId INTEGER NOT NULL,
-    propertyName TEXT NOT NULL,
-    location TEXT NOT NULL,
-    price REAL NOT NULL,
-    startDate TEXT NOT NULL,
-    endDate TEXT NOT NULL,
-    cardNumber TEXT NOT NULL,
-    FOREIGN KEY (userId) REFERENCES users(id)
-  )`);
+  db.run(`
+    CREATE TABLE IF NOT EXISTS bookings (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      userId INTEGER NOT NULL,
+      propertyName TEXT NOT NULL,
+      location TEXT NOT NULL,
+      price REAL NOT NULL,
+      startDate TEXT NOT NULL,
+      endDate TEXT NOT NULL,
+      cardNumber TEXT NOT NULL,
+      FOREIGN KEY (userId) REFERENCES users(id)
+    )
+  `);
 });
 
 // Test route
@@ -82,35 +84,59 @@ app.post('/login', (req, res) => {
   });
 });
 
-// Fetch user by id
-app.get('/user/:id', (req,res) => {
-  db.get('SELECT id, username, email FROM users WHERE id=?', [req.params.id], (err,row) => {
-    if(err) return res.status(500).json({ error: err.message });
-    if(!row) return res.status(404).json({ error: 'User not found' });
+// Get user by id
+app.get('/user/:id', (req, res) => {
+  db.get('SELECT id, username, email FROM users WHERE id=?', [req.params.id], (err, row) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (!row) return res.status(404).json({ error: 'User not found' });
     res.json(row);
   });
 });
 
-// Create a booking
-app.post('/booking', (req,res) => {
+// Create a booking with user existence check and logs
+app.post('/booking', (req, res) => {
   const { userId, propertyName, location, price, startDate, endDate, cardNumber } = req.body;
 
   if (!userId || !propertyName || !location || !price || !startDate || !endDate || !cardNumber) {
     return res.status(400).json({ error: 'All booking fields are required' });
   }
 
-  const stmt = db.prepare('INSERT INTO bookings (userId, propertyName, location, price, startDate, endDate, cardNumber) VALUES (?,?,?,?,?,?,?)');
-  stmt.run(userId, propertyName, location, price, startDate, endDate, cardNumber, function(err) {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json({ bookingId: this.lastID, userId, propertyName, location, price, startDate, endDate });
+  console.log('Booking request received:', req.body);
+
+  // Check if user exists first
+  db.get('SELECT id FROM users WHERE id = ?', [userId], (err, user) => {
+    if (err) {
+      console.error('User check error:', err);
+      return res.status(500).json({ error: 'Database error during user validation' });
+    }
+
+    if (!user) {
+      console.warn('Booking attempt with non-existent userId:', userId);
+      return res.status(400).json({ error: 'User not found' });
+    }
+
+    // Insert booking now
+    const stmt = db.prepare('INSERT INTO bookings (userId, propertyName, location, price, startDate, endDate, cardNumber) VALUES (?,?,?,?,?,?,?)');
+    stmt.run(userId, propertyName, location, price, startDate, endDate, cardNumber, function(err) {
+      if (err) {
+        console.error('Booking insert error:', err);
+        return res.status(500).json({ error: err.message });
+      }
+      console.log('Booking inserted with id:', this.lastID);
+      res.json({ bookingId: this.lastID, userId, propertyName, location, price, startDate, endDate });
+    });
+    stmt.finalize();
   });
-  stmt.finalize();
 });
 
 // Get bookings for a user
-app.get('/bookings/:userId', (req,res) => {
-  db.all('SELECT * FROM bookings WHERE userId = ?', [req.params.userId], (err,rows) => {
-    if(err) return res.status(500).json({ error: err.message });
+app.get('/bookings/:userId', (req, res) => {
+  db.all('SELECT * FROM bookings WHERE userId = ?', [req.params.userId], (err, rows) => {
+    if (err) {
+      console.error('Booking query error:', err);
+      return res.status(500).json({ error: err.message });
+    }
+    console.log('Retrieved bookings:', rows);
     res.json(rows);
   });
 });

@@ -1,12 +1,15 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Modal, Pressable, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useRouter, useLocalSearchParams } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const BookingInfoScreen = () => {
   const router = useRouter();
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [userId, setUserId] = useState<number | null>(null);
+
   const {
-    id,
     title,
     city,
     img,
@@ -21,70 +24,140 @@ const BookingInfoScreen = () => {
     price
   } = useLocalSearchParams();
 
+  // Load userId from AsyncStorage
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const storedId = await AsyncStorage.getItem("userId");
+        if (storedId) setUserId(Number(storedId));
+      } catch (e) {
+        console.error("Failed to load userId:", e);
+      }
+    };
+    fetchUserId();
+  }, []);
+
   // Calculate number of days
   const startDate = checkIn ? new Date(checkIn as string) : null;
   const endDate = checkOut ? new Date(checkOut as string) : null;
   const numDays =
     startDate && endDate
-      ? Math.ceil(
-          (endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)
-        )
+      ? Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24))
       : 0;
+  const total = 1500 * numDays;
+
+  const handlePay = async () => {
+    if (!userId) {
+      Alert.alert("Error", "User not logged in.");
+      return;
+    }
+
+    try {
+      const bookingData = {
+        userId,
+        propertyName: title,
+        location: city,
+        price: total,
+        startDate: checkIn,
+        endDate: checkOut,
+        cardNumber: 'N/A'
+      };
+
+      const response = await fetch('http://localhost:3000/booking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bookingData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Booking failed');
+      }
+
+      setShowSuccess(true);
+      setTimeout(() => {
+        setShowSuccess(false);
+        router.replace('/ereciept');
+      }, 2000);
+
+    } catch (error: any) {
+      Alert.alert('Error', error.message);
+    }
+  };
 
   return (
-    <ScrollView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()}>
-          <Icon name="arrow-back-ios" size={22} color="#222" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Booking Info</Text>
-        <View style={{ width: 22 }} />
-      </View>
-
-      {/* Property Info */}
-      <View style={styles.propertyInfo}>
-        <Image
-          source={{ uri: img as string }}
-          style={styles.propertyImage}
-        />
-        <View style={styles.propertyDetails}>
-          <Text style={styles.propertyName}>{title}</Text>
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 3 }}>
-            <Text style={styles.city}>{city}  </Text>
-            <Icon name="star" size={16} color="#FFD700" />
-            <Text style={styles.rating}>{rating}</Text>
-          </View>
-          <Text style={styles.price}>
-            ${price} <Text style={styles.monthText}>/month</Text>
-          </Text>
+    <>
+      <ScrollView style={styles.container}>
+        {/* Header */}
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => router.back()}>
+            <Icon name="arrow-back-ios" size={22} color="#222" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Booking Info</Text>
+          <View style={{ width: 22 }} />
         </View>
-      </View>
 
-      {/* Booking Details */}
-      <Text style={styles.sectionTitle}>Booking Details</Text>
-      <DetailRow label="Check In" value={checkIn as string} />
-      <DetailRow label="Check Out" value={checkOut as string} />
-      <DetailRow label="Total Days" value={`${numDays} days`} />
+        {/* Property Info */}
+        <View style={styles.propertyInfo}>
+          <Image source={{ uri: img as string }} style={styles.propertyImage} />
+          <View style={styles.propertyDetails}>
+            <Text style={styles.propertyName}>{title}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 3 }}>
+              <Text style={styles.city}>{city} </Text>
+              <Icon name="star" size={16} color="#FFD700" />
+              <Text style={styles.rating}>{rating}</Text>
+            </View>
+            <Text style={styles.price}>
+              ${price} <Text style={styles.monthText}>/month</Text>
+            </Text>
+          </View>
+        </View>
 
-      {/* Guest Details */}
-      <Text style={styles.sectionTitle}>Guest Details</Text>
-      <DetailRow label="Guest Name" value={name as string} />
-      <DetailRow label="Email" value={email as string} />
-      <DetailRow label="Phone" value={phone as string} />
-      <DetailRow label="Guests" value={guests as string} />
-      <DetailRow label="Rooms" value={rooms as string} />
+        {/* Booking Details */}
+        <Text style={styles.sectionTitle}>Booking Details</Text>
+        <DetailRow label="Check In" value={checkIn as string} />
+        <DetailRow label="Check Out" value={checkOut as string} />
+        <DetailRow label="Total Days" value={`${numDays} days`} />
 
-      {/* Payment Details */}
-      <Text style={styles.sectionTitle}>Payment Details</Text>
-      <DetailRow label="Amount" value={`$${Number(price) * numDays}`} />
-      <DetailRow label="Payment Method" value="Cash" valueStyle={styles.cashMethod} />
+        {/* Guest Details */}
+        <Text style={styles.sectionTitle}>Guest Details</Text>
+        <DetailRow label="Guest Name" value={name as string} />
+        <DetailRow label="Email" value={email as string} />
+        <DetailRow label="Phone" value={phone as string} />
+        <DetailRow label="Guests" value={guests as string} />
+        <DetailRow label="Rooms" value={rooms as string} />
 
-      {/* Pay Button */}
-      <TouchableOpacity style={styles.payButton}>
-        <Text style={styles.payButtonText}>Pay ${Number(price) * numDays}</Text>
-      </TouchableOpacity>
-    </ScrollView>
+        {/* Payment Details */}
+        <Text style={styles.sectionTitle}>Payment Details</Text>
+        <DetailRow label="Amount" value={`$${total}`} />
+        <DetailRow label="Payment Method" value="Cash" valueStyle={styles.cashMethod} />
+
+        {/* Pay Button */}
+        <TouchableOpacity style={styles.payButton} onPress={handlePay}>
+          <Text style={styles.payButtonText}>Pay ${total}</Text>
+        </TouchableOpacity>
+      </ScrollView>
+
+      {/* Payment Success Modal */}
+      <Modal
+        animationType="fade"
+        transparent
+        visible={showSuccess}
+        onRequestClose={() => setShowSuccess(false)}>
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <View style={styles.successIconBox}>
+              <Icon name="camera-alt" size={48} color="#5A7BF4" />
+            </View>
+            <Text style={styles.successText}>Payment Successful</Text>
+            <Pressable style={styles.doneButton} disabled>
+              <Text style={styles.doneButtonText}>Done</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+    </>
   );
 };
 
@@ -120,6 +193,41 @@ const styles = StyleSheet.create({
   cashMethod: { color: '#0d6efd', fontWeight: '600' },
   payButton: { backgroundColor: '#5A7BF4', borderRadius: 18, justifyContent: 'center', alignItems: 'center', marginVertical: 28, paddingVertical: 15 },
   payButtonText: { color: '#fff', fontWeight: '700', fontSize: 18 },
+  modalOverlay: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.1)' },
+  modalContainer: {
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    alignItems: 'center',
+    paddingBottom: 36,
+    paddingTop: 32,
+    minHeight: 280,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
+    elevation: 8,
+  },
+  successIconBox: {
+    backgroundColor: '#F3F5FF',
+    borderRadius: 48,
+    width: 85,
+    height: 85,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  successText: { fontWeight: '700', fontSize: 20, marginTop: 18, marginBottom: 12, color: '#222' },
+  doneButton: {
+    backgroundColor: '#5A7BF4',
+    marginTop: 18,
+    borderRadius: 16,
+    width: 200,
+    alignItems: 'center',
+    paddingVertical: 13,
+    opacity: 0.95
+  },
+  doneButtonText: { color: '#fff', fontWeight: '700', fontSize: 18 },
 });
 
 export default BookingInfoScreen;

@@ -62,31 +62,6 @@ export default function GuestInfoScreen() {
               });
     }
 
-    // Example: Send to your backend API
-    try {
-      const response = await fetch('http://localhost:5000/api/guest-info', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name,
-          email,
-          phone: `${countryCode}${phone}`,
-          booksForOthers,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        Alert.alert('Success', 'Guest info saved!');
-        // Navigate to next step (e.g., booking confirmation)
-      } else {
-        Alert.alert('Error', data.message || 'Failed to save guest info');
-      }
-    } catch (err) {
-      console.error(err);
-      Alert.alert('Error', 'Something went wrong');
-    }
   };
 
   return (

@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Checkbox from 'expo-checkbox';
 import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -27,7 +28,6 @@ export default function LoginScreen() {
     try {
       setLoading(true);
 
-      // 👇 Update BASE_URL with your backend URL
       const response = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -38,7 +38,13 @@ export default function LoginScreen() {
 
       if (response.ok) {
         Alert.alert("Success", "Login successful!");
-        // You can save token or user data here using AsyncStorage if needed
+        try {
+          await AsyncStorage.setItem("userId", data.user.id.toString());
+          await AsyncStorage.setItem("username", data.user.username);
+          await AsyncStorage.setItem("email", data.user.email);
+        } catch (e) {
+          console.error("Error saving user data:", e);
+        }
         router.push('/home');
       } else {
         Alert.alert("Login Failed", data.message || "Invalid credentials");
@@ -141,27 +147,10 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, 
-    paddingHorizontal: 24, 
-    paddingTop: 56, 
-    backgroundColor: '#fff' },
-
-  backArrow: { position: 'absolute', 
-    left: 15, 
-    top: 40, 
-    zIndex: 2 },
-
-  header: { fontSize: 23, 
-    fontWeight: '700', 
-    color: '#232323', 
-    marginBottom: 5, 
-    textAlign: 'center' },
-
-  subheader: { fontSize: 14, 
-    color: '#b2b2b2', 
-    marginBottom: 19, 
-    textAlign: 'center' },
-
+  container: { flex: 1, paddingHorizontal: 24, paddingTop: 56, backgroundColor: '#fff' },
+  backArrow: { position: 'absolute', left: 15, top: 40, zIndex: 2 },
+  header: { fontSize: 23, fontWeight: '700', color: '#232323', marginBottom: 5, textAlign: 'center' },
+  subheader: { fontSize: 14, color: '#b2b2b2', marginBottom: 19, textAlign: 'center' },
   inputBox: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#F6F8FC', borderRadius: 15, paddingHorizontal: 16, marginBottom: 17, height: 48, width: '100%' },
   inputIcon: { marginRight: 9 },
   input: { flex: 1, fontSize: 15, color: '#232323' },
