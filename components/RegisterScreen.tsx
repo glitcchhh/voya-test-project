@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   registerButton: {
-    backgroundColor: '#456EFF',
+    backgroundColor: '#4B75E9',
     borderRadius: 24,
     paddingVertical: 14,
     paddingHorizontal: 60,
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   loginText: {
-    color: '#456EFF',
+    color: '#4B75E9',
     fontWeight: 'bold',
   }
 });

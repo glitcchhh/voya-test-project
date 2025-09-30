@@ -10,6 +10,7 @@ import {
   StatusBar,
   Platform,
 } from 'react-native';
+
 import { useRouter } from 'expo-router';
 
 const { width, height } = Dimensions.get('window');
@@ -17,8 +18,8 @@ const { width, height } = Dimensions.get('window');
 const onboardingData = [
   {
     id: '1',
-    title: 'Find Your Perfect Stay,\nAnytime, Anywhere',
-    description: 'Lorem ipsum dolor sit amet consectetur.\nLectus dictum ut nunc sodales a. Nibh\ntortor malesuada amet',
+    title: 'Find Your Perfect Stay,\nAnytime , Anywhere',
+    description: 'Lorem ipsum dolor sit amet consectetur.\nLectus dictum ut nunc sodales a. Nibh tortor malesuada amet',
     images: [
       'https://images.unsplash.com/photo-1509130446498-104dcb6e2b88?w=600',
       'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600',
@@ -28,7 +29,7 @@ const onboardingData = [
   {
     id: '2',
     title: 'Book Your Dream Hotel in Just a Tap',
-    description: 'Lorem ipsum dolor sit amet consectetur.\nLectus dictum ut nunc sodales a. Nibh\ntortor malesuada amet',
+    description: 'Lorem ipsum dolor sit amet consectetur.\nLectus dictum ut nunc sodales a. Nibh tortor malesuada amet',
     images: [
       'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600',
       'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?w=600',
@@ -38,7 +39,7 @@ const onboardingData = [
   {
     id: '3',
     title: 'Relax and enjoy your trip with Voya',
-    description: 'Lorem ipsum dolor sit amet consectetur.\nLectus dictum ut nunc sodales a. Nibh\ntortor malesuada amet',
+    description: 'Lorem ipsum dolor sit amet consectetur.\nLectus dictum ut nunc sodales a. Nibh tortor malesuada amet',
     images: [
       'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?w=600',
       'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?w=600',
@@ -47,9 +48,9 @@ const onboardingData = [
   },
 ];
 
-const IMAGE_HEIGHT = height * 0.33;
-const PILL_WIDTH = (width * 0.75) / 3;
-const PILL_SPACING = 16;
+const IMAGE_HEIGHT = height * 0.31;
+const PILL_WIDTH = (width * 0.78) / 3;
+const PILL_SPACING = 13;
 
 const OnboardingScreen = () => {
   const router = useRouter();
@@ -110,7 +111,7 @@ const OnboardingScreen = () => {
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         onViewableItemsChanged={onViewableItemsChanged}
-        viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
+        viewabilityConfig={{ viewAreaCoveragePercentThreshold: 55 }}
         keyExtractor={item => item.id}
         getItemLayout={(_, index) => ({
           length: width,
@@ -143,36 +144,32 @@ const OnboardingScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  flatList: {
-    flexGrow: 0,
-  },
+  container: { flex: 1, backgroundColor: '#fff', },
+  flatList: { flexGrow: 0 },
   slide: {
     width,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    paddingTop: Platform.OS === 'web' ? 56 : 44,
+    paddingTop: Platform.OS === 'web' ? 64 : 44,
   },
   pillImageRow: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'flex-end',
     marginTop: 12,
-    marginBottom: 32,
+    marginBottom: 33,
     gap: PILL_SPACING,
   },
   pillWrapper: {
     width: PILL_WIDTH,
     height: IMAGE_HEIGHT,
-    borderRadius: 28,
+    borderRadius: 27,
     overflow: 'hidden',
     backgroundColor: '#eef2f5',
+    marginHorizontal: PILL_SPACING / 2,
   },
   middlePill: {
-    marginTop: -12,
+    marginTop: -13,
   },
   pillImage: {
     width: '100%',
@@ -180,24 +177,24 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   textContainer: {
-    marginTop: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 28,
+    paddingHorizontal: 22,
   },
   title: {
-    fontSize: width > 400 ? 22 : 19,
+    fontSize: width > 400 ? 20 : 19,
     fontWeight: '700',
     textAlign: 'center',
-    marginBottom: 16,
+    marginBottom: 12,
     color: '#181818',
-    lineHeight: width > 400 ? 32 : 28,
+    lineHeight: width > 400 ? 30 : 28,
   },
   description: {
     fontSize: width > 400 ? 15 : 13,
     textAlign: 'center',
-    color: '#888',
+    color: '#b7bac0',
     lineHeight: width > 400 ? 23 : 19,
+    fontWeight: '600',
   },
   footer: {
     width: '100%',
@@ -205,12 +202,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 28,
-    paddingBottom: Platform.OS === 'web' ? 36 : 28,
-    marginTop: 0,
+    paddingBottom: Platform.OS === 'web' ? 39 : 28,
   },
   skipText: {
     fontSize: width > 400 ? 16 : 14,
-    color: '#888',
+    color: '#858aad',
+    fontWeight: '600',
+    letterSpacing: 0.5,
   },
   pagination: {
     flexDirection: 'row',
@@ -225,13 +223,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#e3e9f4',
   },
   activeDot: {
-    backgroundColor: '#4169E1',
+    backgroundColor: '#4B75E9',
   },
   nextButton: {
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#4169E1',
+    backgroundColor: '#4B75E9',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -239,7 +237,7 @@ const styles = StyleSheet.create({
     fontSize: 23,
     color: '#fff',
     fontWeight: 'bold',
-    marginTop: -3,
+    marginTop: -2,
   },
 });
 

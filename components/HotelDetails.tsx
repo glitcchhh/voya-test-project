@@ -1,21 +1,40 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { useRouter } from 'expo-router';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
+import Icon from "react-native-vector-icons/Feather";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { useRouter, useLocalSearchParams } from "expo-router";
 
-export default function DetailsScreen() {
+export default function HotelDetails() {
   const [descMore, setDescMore] = useState(false);
   const router = useRouter();
+
+  const {
+    id,
+    title,
+    city,
+    img,
+    rating,
+    checkIn,
+    checkOut,
+    guests,
+    rooms,
+  } = useLocalSearchParams();
 
   return (
     <View style={styles.container}>
       {/* Top Image & Back */}
       <View style={styles.imageBox}>
         <Image
-          source={{ uri: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800' }}
+          source={{ uri: img as string }}
           style={styles.hotelImg}
         />
         <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
@@ -28,16 +47,21 @@ export default function DetailsScreen() {
           <Icon name="heart" size={22} color="#456EFF" />
         </TouchableOpacity>
       </View>
+
       {/* Content */}
-      <ScrollView contentContainerStyle={styles.scroller} showsVerticalScrollIndicator={false}>
-        <Text style={styles.hotelTitle}>Elysium Gardens</Text>
-        <Text style={styles.hotelSub}>Paris, France</Text>
+      <ScrollView
+        contentContainerStyle={styles.scroller}
+        showsVerticalScrollIndicator={false}
+      >
+        <Text style={styles.hotelTitle}>{title}</Text>
+        <Text style={styles.hotelSub}>{city}</Text>
         <View style={styles.reviewRow}>
           <FontAwesome name="star" color="#FFD600" size={13} />
-          <Text style={styles.starScore}>4.5</Text>
-          <Text style={styles.reviewBase}>(10,92 Reviews)</Text>
+          <Text style={styles.starScore}>{rating}</Text>
+          <Text style={styles.reviewBase}>(1,092 Reviews)</Text>
         </View>
 
+        {/* Facilities */}
         <Text style={styles.sectionLabel}>Facilities</Text>
         <View style={styles.facilityRow}>
           <View style={styles.facItem}>
@@ -62,23 +86,62 @@ export default function DetailsScreen() {
           </View>
         </View>
 
+        {/* Dates */}
+        <Text style={styles.sectionLabel}>Your Stay</Text>
+        <Text style={styles.descText}>
+          Check-in: <Text style={{ fontWeight: "600" }}>{checkIn || "Not selected"}</Text>
+        </Text>
+        <Text style={styles.descText}>
+          Check-out: <Text style={{ fontWeight: "600" }}>{checkOut || "Not selected"}</Text>
+        </Text>
+        <Text style={styles.descText}>
+          Guests: <Text style={{ fontWeight: "600" }}>{guests}</Text> | Rooms:{" "}
+          <Text style={{ fontWeight: "600" }}>{rooms}</Text>
+        </Text>
+
         {/* Description */}
         <Text style={styles.sectionLabel}>Description</Text>
         <Text style={styles.descText}>
-          Lorem ipsum dolor sit amet consectetur. Lectus dictum ut nunc sodales a. Nibh tortor malesuada amet malesuada{!descMore && '...'}
-          {descMore && ' elit. Nullam euismod, nisi vel consectetur ornare, orci mauris dictum nulla, at consequat massa neque a lorem.'}
+          Lorem ipsum dolor sit amet consectetur. Lectus dictum ut nunc sodales
+          a. Nibh tortor malesuada amet malesuada
+          {!descMore && "..."}
+          {descMore &&
+            " elit. Nullam euismod, nisi vel consectetur ornare, orci mauris dictum nulla, at consequat massa neque a lorem."}
           <Text
             style={styles.readMore}
-            onPress={() => setDescMore(v => !v)}
-          >{descMore ? ' Read Less' : ' Read More'}</Text>
+            onPress={() => setDescMore((v) => !v)}
+          >
+            {descMore ? " Read Less" : " Read More"}
+          </Text>
         </Text>
+
         {/* Price and Button */}
         <View style={styles.bottomRow}>
           <View>
             <Text style={styles.priceText}>Price</Text>
-            <Text style={styles.mainPrice}>$1,500 <Text style={styles.priceNight}>/Night</Text></Text>
+            <Text style={styles.mainPrice}>
+              $1,500 <Text style={styles.priceNight}>/Night</Text>
+            </Text>
           </View>
-          <TouchableOpacity style={styles.bookBtn}>
+          <TouchableOpacity
+            style={styles.bookBtn}
+            onPress={() =>
+              router.push({
+                pathname: "/booking",
+                params: {
+                  id,
+                  title,
+                  city,
+                  img,
+                  rating,
+                  checkIn,
+                  checkOut,
+                  guests,
+                  rooms,
+                },
+              })
+            }
+          >
             <Text style={styles.bookLabel}>Book Now</Text>
           </TouchableOpacity>
         </View>
@@ -88,68 +151,103 @@ export default function DetailsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
+  container: { flex: 1, backgroundColor: "#fff" },
   imageBox: {
-    width: '100%',
+    width: "100%",
     height: 200,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
-    overflow: 'hidden',
-    position: 'relative',
-    backgroundColor: '#f0f0f0',
+    overflow: "hidden",
+    position: "relative",
+    backgroundColor: "#f0f0f0",
   },
-  hotelImg: { width: '100%', height: '100%', resizeMode: 'cover' },
-  backBtn: { position: 'absolute', top: 18, left: 15, zIndex: 5 },
+  hotelImg: { width: "100%", height: "100%", resizeMode: "cover" },
+  backBtn: { position: "absolute", top: 18, left: 15, zIndex: 5 },
   backInnerBtn: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 20,
     padding: 5,
-    borderColor: '#eee',
+    borderColor: "#eee",
     borderWidth: 1.5,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   detailsTitle: {
-    position: 'absolute',
-    left: 0, right: 0, top: 30,
-    textAlign: 'center',
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 30,
+    textAlign: "center",
     zIndex: 2,
     fontSize: 18,
-    fontWeight: '700',
-    color: '#232323',
+    fontWeight: "700",
+    color: "#232323",
     letterSpacing: 0.2,
   },
-  heartBox: { position: 'absolute', top: 22, right: 18, backgroundColor: 'transparent', zIndex: 2 },
+  heartBox: {
+    position: "absolute",
+    top: 22,
+    right: 18,
+    backgroundColor: "transparent",
+    zIndex: 2,
+  },
   scroller: { padding: 22, paddingBottom: 34 },
-  hotelTitle: { fontSize: 19, fontWeight: '700', color: '#232323' },
-  hotelSub: { color: '#cdcdbb', fontSize: 13, marginTop: 3, marginBottom: 5 },
-  reviewRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 },
-  starScore: { fontSize: 14, color: '#232323', fontWeight: '700', marginLeft: 5 },
-  reviewBase: { color: '#b2b2b2', fontSize: 13, marginLeft: 4 },
-  sectionLabel: { fontWeight: '700', color: '#232323', fontSize: 15, marginTop: 15, marginBottom: 7 },
-  facilityRow: { flexDirection: 'row', alignItems: 'center', gap: 13, marginBottom: 19 },
-  facItem: { alignItems: 'center', width: 55 },
-  facLabel: { marginTop: 5, color: '#232323', fontSize: 13 },
-  descText: { color: '#7d7d7d', fontSize: 14, lineHeight: 20, marginBottom: 11 },
-  readMore: { color: '#4169E1', fontWeight: '600', fontSize: 14, textDecorationLine: 'underline' },
+  hotelTitle: { fontSize: 19, fontWeight: "700", color: "#232323" },
+  hotelSub: { color: "#666", fontSize: 13, marginTop: 3, marginBottom: 5 },
+  reviewRow: { flexDirection: "row", alignItems: "center", marginBottom: 10 },
+  starScore: {
+    fontSize: 14,
+    color: "#232323",
+    fontWeight: "700",
+    marginLeft: 5,
+  },
+  reviewBase: { color: "#b2b2b2", fontSize: 13, marginLeft: 4 },
+  sectionLabel: {
+    fontWeight: "700",
+    color: "#232323",
+    fontSize: 15,
+    marginTop: 15,
+    marginBottom: 7,
+  },
+  facilityRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 13,
+    marginBottom: 19,
+    flexWrap: "wrap",
+  },
+  facItem: { alignItems: "center", width: 55, marginBottom: 10 },
+  facLabel: { marginTop: 5, color: "#232323", fontSize: 13 },
+  descText: {
+    color: "#7d7d7d",
+    fontSize: 14,
+    lineHeight: 20,
+    marginBottom: 11,
+  },
+  readMore: {
+    color: "#4169E1",
+    fontWeight: "600",
+    fontSize: 14,
+    textDecorationLine: "underline",
+  },
   bottomRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "space-between",
     marginTop: 13,
     borderTopWidth: 1,
-    borderTopColor: '#efefef',
+    borderTopColor: "#efefef",
     paddingTop: 17,
   },
-  priceText: { fontSize: 14, color: '#888', marginBottom: 1 },
-  mainPrice: { fontSize: 18, fontWeight: '700', color: '#232323' },
-  priceNight: { fontSize: 13, color: '#888', fontWeight: '400' },
+  priceText: { fontSize: 14, color: "#888", marginBottom: 1 },
+  mainPrice: { fontSize: 18, fontWeight: "700", color: "#232323" },
+  priceNight: { fontSize: 13, color: "#888", fontWeight: "400" },
   bookBtn: {
-    backgroundColor: '#4169E1',
+    backgroundColor: "#4169E1",
     paddingHorizontal: 33,
     paddingVertical: 13,
     borderRadius: 22,
-    alignItems: 'center',
+    alignItems: "center",
   },
-  bookLabel: { color: '#fff', fontSize: 16, fontWeight: '700' },
+  bookLabel: { color: "#fff", fontSize: 16, fontWeight: "700" },
 });

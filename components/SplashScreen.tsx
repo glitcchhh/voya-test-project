@@ -1,7 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet, StatusBar } from 'react-native';
-
+import { useFonts, Poppins_600SemiBold , Poppins_400Regular } from '@expo-google-fonts/poppins';
+import AppLoading from 'expo-app-loading';
 const SplashScreen = () => {
+
+  const[fontsLoaded] = useFonts({
+    Poppins_400Regular,
+    Poppins_600SemiBold,
+  });
+
+  if(!fontsLoaded){
+    return<AppLoading />;
+  }
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
@@ -37,17 +47,21 @@ const styles = StyleSheet.create({
     fontSize: 48,
     fontWeight: '600',
     letterSpacing: -1,
+    fontFamily: 'Poppins_600SemiBold',
   },
   vText: {
-    color: '#4169E1', // Royal blue color
+    color: '#4B75E9',
+    fontFamily: "Poppins_600SemiBold",
   },
   oyaText: {
     color: '#000000',
+    fontFamily: "Poppins_600SemiBold",
   },
   tagline: {
     fontSize: 16,
-    color: '#333333',
+    color: '#000000',
     letterSpacing: 0.5,
+    fontFamily: "Poppins_600SemiBold",
   },
 });
 

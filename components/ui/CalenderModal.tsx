@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 
@@ -8,7 +8,6 @@ interface CalendarModalProps {
   onDateSelect: (date: string) => void;
   selectedDate?: string;
   title?: string;
-  initialMonth?: string;
 }
 
 const CalendarModal: React.FC<CalendarModalProps> = ({
@@ -17,29 +16,46 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
   onDateSelect,
   selectedDate,
   title = 'Select Date',
-  initialMonth = new Date().toISOString().slice(0, 7), // 'YYYY-MM'
 }) => {
+  const [currentSelected, setCurrentSelected] = useState(selectedDate || new Date().toISOString().split('T')[0]);
+  const [initialMonth, setInitialMonth] = useState(currentSelected.slice(0, 7)); // 'YYYY-MM'
+
+  // Update selected date when modal opens or selectedDate changes
+  useEffect(() => {
+    if (visible) {
+      const defaultDate = selectedDate || new Date().toISOString().split('T')[0];
+      setCurrentSelected(defaultDate);
+      setInitialMonth(defaultDate.slice(0, 7));
+    }
+  }, [visible, selectedDate]);
+
+  const handleConfirm = () => {
+    onDateSelect(currentSelected);
+    onClose();
+  };
+
   return (
     <Modal visible={visible} transparent animationType="fade">
       <View style={styles.overlay}>
         <View style={styles.modal}>
+          {/* Header */}
           <View style={styles.header}>
             <Text style={styles.title}>{title}</Text>
             <TouchableOpacity onPress={onClose}>
               <Text style={styles.close}>×</Text>
             </TouchableOpacity>
           </View>
+
+          {/* Calendar */}
           <Calendar
             current={initialMonth}
-            onDayPress={day => onDateSelect(day.dateString)}
-            markedDates={
-              selectedDate ? {
-                [selectedDate]: {
-                  selected: true,
-                  selectedColor: '#4977F9',
-                },
-              } : undefined
-            }
+            onDayPress={(day) => setCurrentSelected(day.dateString)}
+            markedDates={{
+              [currentSelected]: {
+                selected: true,
+                selectedColor: '#4977F9',
+              },
+            }}
             theme={{
               backgroundColor: '#fff',
               calendarBackground: '#fff',
@@ -54,7 +70,9 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
             }}
             style={{ borderRadius: 16, marginBottom: 18 }}
           />
-          <TouchableOpacity style={styles.button} onPress={onClose}>
+
+          {/* Continue Button */}
+          <TouchableOpacity style={styles.button} onPress={handleConfirm}>
             <Text style={styles.buttonText}>Continue</Text>
           </TouchableOpacity>
         </View>

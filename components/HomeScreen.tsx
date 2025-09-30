@@ -32,10 +32,22 @@ export default function HomeScreen() {
     return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
   };
 
-  const handleHotelPress = () => {
-    router.push('/hoteldetails');
+  const handleHotelPress = (hotel: any) => {
+    router.push({
+      pathname: '/hoteldetails', 
+      params: {
+        hotelId: hotel.id,
+        title: hotel.title,
+        city: hotel.city,
+        img: hotel.img,
+        rating: hotel.rating,
+        checkIn: checkIn || '',
+        checkOut: checkOut || '',
+        guests,
+        rooms,
+      },
+    });
   };
-
   return (
     <View style={styles.container}>
       {/* Header */}
