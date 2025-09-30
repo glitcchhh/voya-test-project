@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from 'rea
 import Icon from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import CalendarModal from './ui/CalenderModal';
 import PaymentMethodModal from './ui/PaymentmethodModal';
 
@@ -14,6 +14,7 @@ export default function BookingScreen() {
   const params = useLocalSearchParams();
 
   const hotel = {
+    id: params.id as number,
     image: params.img as string,
     title: params.title as string,
     location: params.city as string,
@@ -104,9 +105,28 @@ export default function BookingScreen() {
       </View>
 
       {/* Continue Button */}
-      <TouchableOpacity style={styles.continueBtn}>
+      <TouchableOpacity
+        style={styles.continueBtn}
+        onPress={() =>
+          router.replace({
+            pathname: "/guestdetails",
+            params: {
+              id: params.id,
+              title: params.title,
+              city: params.city,
+              img: params.img,
+              rating: params.rating,
+              checkIn,
+              checkOut,
+              guests,
+              rooms,
+            },
+          })
+        }
+      >
         <Text style={styles.continueText}>Continue</Text>
       </TouchableOpacity>
+
 
       {/* Modals */}
       <CalendarModal
