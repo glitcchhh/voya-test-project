@@ -1,18 +1,17 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  View,
+  Alert,
+  Dimensions,
+  StyleSheet,
+  Switch,
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
-  Switch,
-  Dimensions,
-  Alert,
+  View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useRouter, useLocalSearchParams } from "expo-router";
 
 const { width } = Dimensions.get('window');
 
@@ -126,7 +125,7 @@ export default function GuestInfoScreen() {
         <Switch
           value={booksForOthers}
           onValueChange={setBooksForOthers}
-          thumbColor={booksForOthers ? '#4169E1' : '#cfd0d5'}
+          thumbColor={booksForOthers ? '#4B75E9' : '#cfd0d5'}
           trackColor={{ false: '#ececf0', true: '#d3dfff' }}
         />
       </View>

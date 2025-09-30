@@ -102,7 +102,7 @@ const OnboardingScreen = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+      <StatusBar barStyle="dark-content" backgroundColor="#F9F9F9" />
       <FlatList
         ref={flatListRef}
         data={onboardingData}
@@ -144,7 +144,7 @@ const OnboardingScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', },
+  container: { flex: 1, backgroundColor: '#F9F9F9', },
   flatList: { flexGrow: 0 },
   slide: {
     width,

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { router, useLocalSearchParams } from 'expo-router';
+import React, { useState } from 'react';
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CalendarModal from './ui/CalenderModal';
 import PaymentMethodModal from './ui/PaymentmethodModal';
 
@@ -69,11 +69,11 @@ export default function BookingScreen() {
         {/* Dates */}
         <View style={styles.inputRow}>
           <TouchableOpacity style={styles.inputIconBox} onPress={() => setShowCheckInModal(true)}>
-            <Icon name="calendar" color="#4169E1" size={18} />
+            <Icon name="calendar" color="#4B75E9" size={18} />
             <Text style={styles.inputText}>{checkIn ? formatDate(checkIn) : 'Select Check-in'}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.inputIconBox} onPress={() => setShowCheckOutModal(true)}>
-            <Icon name="calendar" color="#4169E1" size={18} />
+            <Icon name="calendar" color="#4B75E9" size={18} />
             <Text style={styles.inputText}>{checkOut ? formatDate(checkOut) : 'Select Check-out'}</Text>
           </TouchableOpacity>
         </View>
@@ -81,18 +81,18 @@ export default function BookingScreen() {
         {/* Guests / Rooms */}
         <View style={styles.inputRow}>
           <TouchableOpacity style={styles.inputIconBox}>
-            <Icon name="user" color="#4169E1" size={18} />
+            <Icon name="user" color="#4B75E9" size={18} />
             <Text style={styles.inputText}>{guests} Guest</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.inputIconBox}>
-            <MaterialCommunityIcons name="bed-empty" color="#4169E1" size={18} />
+            <MaterialCommunityIcons name="bed-empty" color="#4B75E9" size={18} />
             <Text style={styles.inputText}>{rooms} Room</Text>
           </TouchableOpacity>
         </View>
 
         {/* Room Type */}
         <TouchableOpacity style={styles.inputSelectRow}>
-          <Icon name="home" color="#4169E1" size={18} />
+          <Icon name="home" color="#4B75E9" size={18} />
           <Text style={styles.inputText}>{roomType}</Text>
           <Icon name="chevron-down" color="#B1B5BB" size={20} style={{ marginLeft: 'auto' }} />
         </TouchableOpacity>

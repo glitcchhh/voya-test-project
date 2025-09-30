@@ -98,7 +98,7 @@ export default function LoginScreen() {
         <Checkbox
           value={remember}
           onValueChange={setRemember}
-          color={remember ? '#456EFF': undefined}
+          color={remember ? '#4B75E9': undefined}
           style={styles.checkbox}
         />
         <Text style={styles.rememberText}>Remember Me</Text>
@@ -127,11 +127,11 @@ export default function LoginScreen() {
 
       <View style={styles.socialRow}>
         <TouchableOpacity style={styles.socialButton}>
-          <FontAwesome name="google" size={21} color="#EA4335" />
+          <FontAwesome name="google" size={21} color="#891409ff" />
           <Text style={styles.socialText}>Google</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.socialButton}>
-          <FontAwesome name="facebook" size={21} color="#1877F3" />
+          <FontAwesome name="facebook" size={21} color="#4B75E9" />
           <Text style={styles.socialText}>Facebook</Text>
         </TouchableOpacity>
       </View>
@@ -147,26 +147,140 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, paddingHorizontal: 24, paddingTop: 56, backgroundColor: '#fff' },
-  backArrow: { position: 'absolute', left: 15, top: 40, zIndex: 2 },
-  header: { fontSize: 23, fontWeight: '700', color: '#232323', marginBottom: 5, textAlign: 'center' },
-  subheader: { fontSize: 14, color: '#b2b2b2', marginBottom: 19, textAlign: 'center' },
-  inputBox: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#F6F8FC', borderRadius: 15, paddingHorizontal: 16, marginBottom: 17, height: 48, width: '100%' },
-  inputIcon: { marginRight: 9 },
-  input: { flex: 1, fontSize: 15, color: '#232323' },
-  row: { flexDirection: 'row', alignItems: 'center', marginBottom: 21, justifyContent: 'space-between', width: '100%' },
-  checkbox: { width: 21, height: 21, marginRight: 8 },
-  rememberText: { fontSize: 13, color: '#232323', marginLeft: -3, flex: 1 },
-  forgotLink: { marginLeft: 'auto' },
-  forgotText: { color: '#456EFF', textDecorationLine: 'underline', fontWeight: '500', fontSize: 13 },
-  loginButton: { backgroundColor: '#456EFF', borderRadius: 25, height: 48, alignItems: 'center', justifyContent: 'center', marginBottom: 18, marginTop: 1, width: '100%' },
-  loginButtonText: { color: '#fff', fontSize: 17, fontWeight: '600' },
-  orRow: { flexDirection: 'row', alignItems: 'center', marginVertical: 7 },
-  divider: { flex: 1, height: 1, backgroundColor: '#ededed' },
-  orText: { marginHorizontal: 12, fontSize: 15, color: '#b2b2b2', fontWeight: '500' },
-  socialRow: { flexDirection: 'row', justifyContent: 'center', marginBottom: 15, gap: 14 },
-  socialButton: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#F6F8FC', borderRadius: 15, paddingHorizontal: 20, paddingVertical: 7, gap: 7, marginHorizontal: 5, minWidth: 98, justifyContent: 'center' },
-  socialText: { fontSize: 15, fontWeight: '500', color: '#232323', marginLeft: 6 },
-  bottomText: { textAlign: 'center', color: '#232323', fontSize: 14, marginTop: 7 },
-  loginLink: { color: '#456EFF', fontWeight: '600', textDecorationLine: 'underline' },
+  container: {
+    flex: 1,
+    paddingHorizontal: 24,
+    paddingTop: 56,
+    backgroundColor: '#fff',
+  },
+  backArrow: {
+    position: 'absolute',
+    left: 15,
+    top: 40,
+    zIndex: 2,
+  },
+  header: {
+    fontSize: 23,
+    fontWeight: '700',
+    color: '#181818',
+    marginBottom: 5,
+    textAlign: 'center',
+  },
+  subheader: {
+    fontSize: 14,
+    color: '#A2A5AD',
+    marginBottom: 19,
+    textAlign: 'center',
+  },
+  inputBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F4F7FF',
+    borderRadius: 15,
+    paddingHorizontal: 16,
+    marginBottom: 17,
+    height: 48,
+    width: '100%',
+  },
+  inputIcon: {
+    marginRight: 9,
+  },
+  input: {
+    flex: 1,
+    fontSize: 15,
+    color: '#181818',
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 21,
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  checkbox: {
+    width: 21,
+    height: 21,
+    marginRight: 8,
+  },
+  rememberText: {
+    fontSize: 13,
+    color: '#181818',
+    marginLeft: -3,
+    flex: 1,
+  },
+  forgotLink: {
+    marginLeft: 'auto',
+  },
+  forgotText: {
+    color: '#4B75E9',
+    textDecorationLine: 'underline',
+    fontWeight: '500',
+    fontSize: 13,
+  },
+  loginButton: {
+    backgroundColor: '#4B75E9',
+    borderRadius: 25,
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 18,
+    marginTop: 1,
+    width: '100%',
+  },
+  loginButtonText: {
+    color: '#fff',
+    fontSize: 17,
+    fontWeight: '600',
+  },
+  orRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 7,
+  },
+  divider: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#ededed',
+  },
+  orText: {
+    marginHorizontal: 12,
+    fontSize: 15,
+    color: '#b2b2b2',
+    fontWeight: '500',
+  },
+  socialRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 15,
+    gap: 14,
+  },
+  socialButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F4F7FF',
+    borderRadius: 15,
+    paddingHorizontal: 20,
+    paddingVertical: 7,
+    gap: 7,
+    marginHorizontal: 5,
+    minWidth: 98,
+    justifyContent: 'center',
+  },
+  socialText: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#232323',
+    marginLeft: 6,
+  },
+  bottomText: {
+    textAlign: 'center',
+    color: '#232323',
+    fontSize: 14,
+    marginTop: 7,
+  },
+  loginLink: {
+    color: '#4B75E9',
+    fontWeight: '600',
+    textDecorationLine: 'underline',
+  },
 });

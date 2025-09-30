@@ -169,10 +169,10 @@ export default function HomeScreen() {
       {/* Bottom Tab Bar */}
       <View style={styles.tabBar}>
         <TouchableOpacity style={styles.tabBarItem}>
-          <Icon name="home" size={20} color="#4169E1" />
+          <Icon name="home" size={20} color="#4B75E9" />
           <Text style={styles.tabLabelActive}>Home</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.tabBarItem}>
+        <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/mybookings')}>
           <Icon name="calendar" size={20} color="#C7C7C7" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.tabBarItem}>
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
     marginBottom: 13,
   },
   findButton: {
-    backgroundColor: '#4169E1',
+    backgroundColor: '#4B75E9',
     borderRadius: 24,
     height: 48,
     alignItems: 'center',
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
   },
   viewAllText: {
     fontSize: 15,
-    color: '#4169E1',
+    color: '#4B75E9',
     fontWeight: '600',
   },
   hotelList: {
@@ -374,7 +374,7 @@ const styles = StyleSheet.create({
   },
   tabLabelActive: {
     fontSize: 11,
-    color: '#4169E1',
+    color: '#4B75E9',
     fontWeight: '600',
     marginTop: 2,
   },

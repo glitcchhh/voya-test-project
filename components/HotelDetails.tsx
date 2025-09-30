@@ -44,7 +44,7 @@ export default function HotelDetails() {
         </TouchableOpacity>
         <Text style={styles.detailsTitle}>Details</Text>
         <TouchableOpacity style={styles.heartBox}>
-          <Icon name="heart" size={22} color="#456EFF" />
+          <Icon name="heart" size={22} color="#4B75E9" />
         </TouchableOpacity>
       </View>
 
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     marginBottom: 11,
   },
   readMore: {
-    color: "#4169E1",
+    color: "#4B75E9",
     fontWeight: "600",
     fontSize: 14,
     textDecorationLine: "underline",
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
   mainPrice: { fontSize: 18, fontWeight: "700", color: "#232323" },
   priceNight: { fontSize: 13, color: "#888", fontWeight: "400" },
   bookBtn: {
-    backgroundColor: "#4169E1",
+    backgroundColor: "#4B75E9",
     paddingHorizontal: 33,
     paddingVertical: 13,
     borderRadius: 22,
