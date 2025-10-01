@@ -44,7 +44,7 @@ const BookingInfoScreen = () => {
     startDate && endDate
       ? Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24))
       : 0;
-  const total = 150 * numDays;
+  const total = 1500 * numDays;
 
   const handlePay = async () => {
     if (!userId) {

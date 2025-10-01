@@ -114,7 +114,7 @@ export default function FavoritesScreen() {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.headerRow}>
-        <TouchableOpacity onPress={() => router.back()}>
+        <TouchableOpacity onPress={() => router.replace('/home')}>
           <Icon name="arrow-left" size={20} color="#222" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Favorite</Text>

@@ -6,6 +6,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CalendarModal from './ui/CalenderModal';
 import PaymentMethodModal from './ui/PaymentmethodModal';
+import RoomTypeDropdown from './ui/RoomTypeDropdown';
 
 const { width } = Dimensions.get('window');
 const CARD_RADIUS = 18;
@@ -19,7 +20,7 @@ export default function BookingScreen() {
     title: params.title as string,
     location: params.city as string,
     rating: params.rating ? Number(params.rating) : 0,
-    price: '$1500.00',
+    price: '₹1500.00',
   };
 
   const [checkIn, setCheckIn] = useState(params.checkIn as string || '');
@@ -57,7 +58,7 @@ export default function BookingScreen() {
           </View>
           <Text style={styles.hotelPrice}>
             {hotel.price}
-            <Text style={styles.hotelMonth}>/month</Text>
+            <Text style={styles.hotelMonth}>/night</Text>
           </Text>
         </View>
       </View>
@@ -91,11 +92,13 @@ export default function BookingScreen() {
         </View>
 
         {/* Room Type */}
-        <TouchableOpacity style={styles.inputSelectRow}>
-          <Icon name="home" color="#4B75E9" size={18} />
-          <Text style={styles.inputText}>{roomType}</Text>
-          <Icon name="chevron-down" color="#B1B5BB" size={20} style={{ marginLeft: 'auto' }} />
-        </TouchableOpacity>
+        <View style={styles.inputSelectRow}>
+          <Icon name="home" color="#4B75E9" size={18}/>
+          <RoomTypeDropdown
+            value={roomType}
+            onSelect={(type: string)=>setRoomType(type)}
+          />
+        </View>
 
         {/* Payment */}
         <TouchableOpacity style={styles.inputSelectRow} onPress={() => setShowPaymentModal(true)}>
@@ -154,14 +157,22 @@ export default function BookingScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff', paddingHorizontal: 18, paddingTop: 36 },
-  header: { fontSize: 20, fontWeight: '700', color: '#222', marginBottom: 18, alignSelf: 'center' },
+
+  header: { fontSize: 20, fontWeight: '700', color: '#222', marginBottom: 18, alignSelf: 'center',fontFamily:'Inter', },
+
   hotelRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 11 },
+
   hotelImg: { height: 52, width: 58, borderRadius: 11 },
-  hotelTitle: { fontSize: 16, fontWeight: '700', color: '#232323', marginBottom: 3 },
-  hotelLocation: { fontSize: 13, color: '#818181', marginRight: 4 },
-  hotelRating: { fontSize: 13, color: '#232323', fontWeight: '600', marginLeft: 3 },
-  hotelPrice: { fontSize: 17, color: '#222', fontWeight: '700', marginTop: 5 },
-  hotelMonth: { fontSize: 13, color: '#817D97', fontWeight: '500', marginLeft: 2 },
+
+  hotelTitle: { fontSize: 16, fontWeight: '700', color: '#232323', marginBottom: 3,fontFamily:'Inter', },
+
+  hotelLocation: { fontSize: 13, color: '#818181', marginRight: 4,fontFamily:'Inter', },
+
+  hotelRating: { fontSize: 13, color: '#232323', fontWeight: '600', marginLeft: 3 ,fontFamily:'Inter',},
+
+  hotelPrice: { fontSize: 17, color: '#222', fontWeight: '700', marginTop: 5, fontFamily:'Inter',},
+
+  hotelMonth: { fontSize: 13, color: '#817D97', fontWeight: '500', marginLeft: 2,fontFamily:'Inter', },
   divider: { height: 1, backgroundColor: '#ECECEC', marginVertical: 14, marginHorizontal: -11 },
   card: {
     backgroundColor: '#F5F8FE',
@@ -185,7 +196,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
     minHeight: 38,
   },
-  inputText: { fontSize: 15, color: '#283753', fontWeight: '500', marginLeft: 8 },
+  inputText: { fontSize: 15, color: '#283753', fontWeight: '500', marginLeft: 8,fontFamily:'Inter', },
   inputSelectRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -193,9 +204,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 7,
     marginBottom: 11,
-    minHeight: 38,
+    minHeight: 28,
+    borderRadius: 20,
   },
-  cardNumber: { fontSize: 15, marginLeft: 8, color: '#283753', fontWeight: '500' },
+  cardNumber: { fontSize: 15, marginLeft: 8, color: '#283753', fontWeight: '500',fontFamily:'Inter', },
   continueBtn: { backgroundColor: '#4977F9', borderRadius: 30, paddingVertical: 15, marginTop: 12, alignItems: 'center' },
-  continueText: { color: '#fff', fontSize: 16, fontWeight: '600' },
+  continueText: { color: '#fff', fontSize: 16, fontWeight: '600',fontFamily:'Inter', },
 });

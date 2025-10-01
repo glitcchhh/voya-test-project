@@ -37,7 +37,7 @@ export default function ProfileScreen() {
     <View style={styles.container}>
       {/* Header & Profile */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()}>
+        <TouchableOpacity onPress={() => router.replace('/home')}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.profileTitle}>Profile</Text>
@@ -61,16 +61,16 @@ export default function ProfileScreen() {
       {/* Preferences */}
       <Text style={styles.sectionTitle}>Preferences</Text>
       <View style={styles.section}>
-        <Option icon={<MaterialIcons name="payment" size={20} color="#63686E" />} label="Payment Methods" />
-        <Option icon={<Ionicons name="ios-card" size={20} color="#63686E" />} label="Currency" />
-        <Option icon={<FontAwesome5 name="globe" size={20} color="#63686E" />} label="Country" />
+        <Option icon={<MaterialIcons name="payment" size={20} color="#949698ff" />} label="Payment Methods" />
+        <Option icon={<Ionicons name="ios-card" size={20} color="#949698ff" />} label="Currency" />
+        <Option icon={<FontAwesome5 name="globe" size={20} color="#949698ff" />} label="Country" />
       </View>
 
       {/* Help Center */}
       <Text style={styles.sectionTitle}>Help Center</Text>
       <View style={styles.section}>
-        <Option icon={<Ionicons name="help-circle-outline" size={20} color="#63686E" />} label="FAQ,s" />
-        <Option icon={<MaterialIcons name="support-agent" size={20} color="#63686E" />} label="Help & Support" />
+        <Option icon={<Ionicons name="help-circle-outline" size={20} color="#949698ff" />} label="FAQ,s" />
+        <Option icon={<MaterialIcons name="support-agent" size={20} color="#949698ff" />} label="Help & Support" />
       </View>
 
       {/* Bottom Tab Bar */}
@@ -98,27 +98,84 @@ function Option({ icon, label }) {
     <TouchableOpacity style={styles.option}>
       <View style={styles.icon}>{icon}</View>
       <Text style={styles.optionLabel}>{label}</Text>
-      <Ionicons name="chevron-forward" size={18} color="#63686E" />
+      <Ionicons name="chevron-forward" size={18} color="#9da0a2ff" />
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F9F9FB', paddingTop: 45 },
-  header: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 22, marginBottom: 14 },
-  profileTitle: { flex: 1, textAlign: 'center', fontWeight: 'bold', fontSize: 19 },
-  profileRow: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 22, marginVertical: 18 },
-  avatar: { width: 56, height: 56, borderRadius: 28, marginRight: 15 },
+  container: {
+    flex: 1,
+    backgroundColor: '#F9F9FB',
+    paddingTop: 45,
+  },
+
+  // Header
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 22,
+    marginBottom: 14,
+  },
+  profileTitle: {
+    flex: 1,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 19,
+    fontFamily:'Inter',
+  },
+
+  // Profile Row
+  profileRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 22,
+    marginVertical: 18,
+  },
+  avatar: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    marginRight: 15,
+  },
   userInfo: { flex: 1 },
-  userName: { fontWeight: 'bold', fontSize: 16, color: '#222' },
-  userEmail: { color: '#616469', fontSize: 13, marginTop: 1 },
-  editText: { color: '#066EFF', fontWeight: '500', fontSize: 15 },
-  sectionTitle: { color: '#222', fontWeight: 'bold', fontSize: 15, marginLeft: 24, marginTop: 12 },
-  section: { marginTop: 3 },
+  userName: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#222',
+    fontFamily:'Inter',
+  },
+  userEmail: {
+    color: '#616469',
+    fontSize: 13,
+    marginTop: 1,
+    fontFamily:'Inter',
+  },
+  editText: {
+    color: '#066EFF',
+    fontWeight: '500',
+    fontSize: 15,
+    fontFamily:'Inter',
+  },
+
+  // Sections
+  sectionTitle: {
+    color: '#222',
+    fontWeight: 'bold',
+    fontSize: 15,
+    marginLeft: 24,
+    marginTop: 12,
+    fontFamily:'Inter',
+  },
+  section: {
+    marginTop: 3,
+  },
+
+  // Options
   option: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F5F7FB',
+    backgroundColor: '#F4F7FF',
     borderRadius: 14,
     marginHorizontal: 17,
     marginVertical: 6,
@@ -129,10 +186,18 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 1,
   },
-  icon: { marginRight: 15 },
-  optionLabel: { flex: 1, fontSize: 15, color: '#222' },
+  icon: {
+    marginRight: 15,
+  },
+  optionLabel: {
+    flex: 1,
+    fontSize: 15,
+    color: '#222',
+    fontFamily:'Inter',
+  },
 
-    tabBar: {
+  // Bottom Tab Bar
+  tabBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderTopWidth: 1,
@@ -160,3 +225,4 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter',
   },
 });
+

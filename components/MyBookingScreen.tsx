@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useRouter } from 'expo-router';
 
 const SAMPLE_IMAGE =
@@ -152,7 +152,7 @@ const MyBookingsScreen: React.FC = () => {
     <View style={styles.wrap}>
       {/* Header */}
       <View style={styles.headerRow}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => router.replace('/home')}>
           <Icon name="arrow-back-ios" size={22} color="#222" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>My Booking</Text>

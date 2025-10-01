@@ -231,7 +231,7 @@ export default function HotelDetails() {
           <View>
             <Text style={styles.priceText}>Price</Text>
             <Text style={styles.mainPrice}>
-              $1,500 <Text style={styles.priceNight}>/Night</Text>
+              ₹1,500 <Text style={styles.priceNight}>/Night</Text>
             </Text>
           </View>
           <TouchableOpacity
