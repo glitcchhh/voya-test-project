@@ -9,28 +9,28 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export default function GuestInfoScreen() {
   const [booksForOthers, setBooksForOthers] = useState(false);
 
-   const {
-      id,
-      title,
-      city,
-      img,
-      rating,
-      checkIn,
-      checkOut,
-      guests,
-      rooms,
-    } = useLocalSearchParams();
+  const {
+    id,
+    title,
+    city,
+    img,
+    rating,
+    checkIn,
+    checkOut,
+    guests,
+    rooms,
+  } = useLocalSearchParams();
 
-  // User input states
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [countryCode, setCountryCode] = useState('+91');
@@ -40,31 +40,29 @@ export default function GuestInfoScreen() {
     if (!name || !email || !phone) {
       Alert.alert('Missing Info', 'Please fill all fields');
       return;
-    }
-    else {
+    } else {
       router.push({
-                pathname: "/bookinginfo",
-                params: {
-                  id,
-                  title,
-                  city,
-                  img,
-                  rating,
-                  checkIn,
-                  checkOut,
-                  guests,
-                  rooms,   
-                  name,
-                  email,
-                  phone,
-                },
-              });
+        pathname: '/bookinginfo',
+        params: {
+          id,
+          title,
+          city,
+          img,
+          rating,
+          checkIn,
+          checkOut,
+          guests,
+          rooms,
+          name,
+          email,
+          phone,
+        },
+      });
     }
-
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       {/* Header */}
       <Text style={styles.header}>Guest Info</Text>
 
@@ -72,7 +70,7 @@ export default function GuestInfoScreen() {
       <View style={styles.infoCard}>
         {/* Name */}
         <View style={styles.fieldRow}>
-          <Icon name="user" size={18} color="#B2B2B2" style={styles.icon} />
+          <Icon name="user" size={width * 0.045} color="#B2B2B2" style={styles.icon} />
           <TextInput
             style={styles.input}
             placeholder="Enter Full Name"
@@ -85,7 +83,7 @@ export default function GuestInfoScreen() {
         <View style={styles.fieldRow}>
           <MaterialCommunityIcons
             name="email-outline"
-            size={18}
+            size={width * 0.045}
             color="#B2B2B2"
             style={styles.icon}
           />
@@ -134,7 +132,7 @@ export default function GuestInfoScreen() {
       <TouchableOpacity style={styles.button} onPress={handleContinue}>
         <Text style={styles.buttonText}>Continue</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -142,60 +140,77 @@ const CARD_RADIUS = 16;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: '#fff',
-    paddingTop: 28,
+    paddingTop: height * 0.035,
     alignItems: 'center',
+    paddingBottom: height * 0.05,
   },
   header: {
-    alignSelf: 'center',
-    fontSize: 17,
+    fontSize: width * 0.045,
     fontWeight: '700',
     color: '#181818',
-    marginBottom: 19,
+    marginBottom: height * 0.025,
+    fontFamily:'Inter',
   },
   infoCard: {
     width: '94%',
     borderRadius: CARD_RADIUS,
     backgroundColor: '#F7F9FE',
-    paddingVertical: 7,
-    marginBottom: 10,
-    marginTop: 8,
+    paddingVertical: height * 0.01,
+    marginBottom: height * 0.02,
+    marginTop: height * 0.01,
   },
   fieldRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 11,
-    paddingHorizontal: 19,
+    paddingVertical: height * 0.015,
+    paddingHorizontal: width * 0.045,
     marginBottom: 1,
     backgroundColor: '#F7F9FE',
   },
-  icon: { marginRight: 10 },
+  icon: { marginRight: width * 0.03 },
   input: {
     flex: 1,
-    fontSize: 15,
+    fontSize: width * 0.04,
     color: '#202020',
     fontWeight: '500',
     paddingVertical: 4,
-  },
+    fontFamily:'Inter',
+  
+  },  
+  
+    button: {
+  position: 'absolute',
+  bottom: height * 0.03, // 3% from bottom
+  backgroundColor: '#4977F9',
+  borderRadius: 29,
+  height: height * 0.065,
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: width * 0.88,
+  alignSelf: 'center',
+},
+
   switchRow: {
-    marginTop: 14,
+    marginTop: height * 0.015,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '93%',
   },
-  booksText: { fontSize: 16, color: '#24262e', fontWeight: '500' },
-  bold: { fontWeight: '700' },
+  booksText: { fontSize: width * 0.042, color: '#24262e', fontWeight: '500',fontFamily:'Inter', },
+  bold: { fontWeight: '700',fontFamily:'Inter',},
   button: {
-    backgroundColor: '#4977F9',
-    borderRadius: 29,
-    height: 48,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    bottom: 31,
-    width: width * 0.88,
-  },
-  buttonText: { color: '#fff', fontSize: 16, fontWeight: '700' },
+  position: 'absolute',
+  bottom: height * 0.03, // 3% from bottom
+  backgroundColor: '#4977F9',
+  borderRadius: 29,
+  height: height * 0.065,
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: width * 0.88,
+  alignSelf: 'center',
+},
+  buttonText: { color: '#fff', fontSize: width * 0.045, fontWeight: '700',fontFamily:'Inter', },
 });

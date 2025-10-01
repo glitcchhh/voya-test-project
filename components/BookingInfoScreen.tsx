@@ -44,7 +44,7 @@ const BookingInfoScreen = () => {
     startDate && endDate
       ? Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24))
       : 0;
-  const total = 1500 * numDays;
+  const total = 150 * numDays;
 
   const handlePay = async () => {
     if (!userId) {
@@ -76,15 +76,35 @@ const BookingInfoScreen = () => {
         throw new Error(data.error || 'Booking failed');
       }
 
+      // Show success modal
       setShowSuccess(true);
-      setTimeout(() => {
-        setShowSuccess(false);
-        router.replace('/home');
-      }, 2000);
 
     } catch (error: any) {
       Alert.alert('Error', error.message);
     }
+  };
+
+  const handleDone = () => {
+    setShowSuccess(false);
+    router.replace({
+      pathname: '/ereceipt',
+      params: {
+        title,
+        city,
+        img,
+        rating,
+        checkIn,
+        checkOut,
+        guests,
+        rooms,
+        name,
+        email,
+        phone,
+        price,
+        total,
+        userId,
+      },
+    });
   };
 
   return (
@@ -152,7 +172,7 @@ const BookingInfoScreen = () => {
               <Icon name="camera-alt" size={48} color="#5A7BF4" />
             </View>
             <Text style={styles.successText}>Payment Successful</Text>
-            <Pressable style={styles.doneButton} disabled>
+            <Pressable style={styles.doneButton} onPress={handleDone}>
               <Text style={styles.doneButtonText}>Done</Text>
             </Pressable>
           </View>
@@ -178,57 +198,28 @@ const DetailRow: React.FC<DetailRowProps> = ({ label, value, valueStyle = {} }) 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff', paddingHorizontal: 16 },
   header: { flexDirection: 'row', alignItems: 'center', paddingVertical: 12, marginBottom: 4 },
-  headerTitle: { flex: 1, textAlign: 'center', fontWeight: '600', fontSize: 18, color: '#222' },
+  headerTitle: { flex: 1, textAlign: 'center', fontWeight: '600', fontSize: 18, color: '#222', fontFamily:'Inter' },
   propertyInfo: { flexDirection: 'row', marginVertical: 16 },
   propertyImage: { width: 70, height: 70, borderRadius: 8, marginRight: 12, backgroundColor: '#d3d3d3' },
   propertyDetails: { flex: 1, justifyContent: 'center' },
-  propertyName: { fontWeight: '600', fontSize: 17, marginBottom: 2, color: '#222' },
-  city: { fontSize: 14, color: '#888' },
-  rating: { marginLeft: 3, fontWeight: '500', color: '#222', fontSize: 14 },
-  price: { fontSize: 15, fontWeight: '600', marginTop: 3, color: '#222' },
-  monthText: { fontSize: 13, color: '#999', fontWeight: '400' },
-  sectionTitle: { marginTop: 18, marginBottom: 6, fontWeight: '700', fontSize: 15, color: '#222' },
+  propertyName: { fontWeight: '600', fontSize: 17, marginBottom: 2, color: '#222', fontFamily:'Inter' },
+  city: { fontSize: 14, color: '#888', fontFamily:'Inter' },
+  rating: { marginLeft: 3, fontWeight: '500', color: '#222', fontSize: 14, fontFamily:'Inter' },
+  price: { fontSize: 15, fontWeight: '600', marginTop: 3, color: '#222', fontFamily:'Inter' },
+  monthText: { fontSize: 13, color: '#999', fontWeight: '400', fontFamily:'Inter' },
+  sectionTitle: { marginTop: 18, marginBottom: 6, fontWeight: '700', fontSize: 15, color: '#222', fontFamily:'Inter' },
   detailRow: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 2, marginVertical: 2 },
-  detailLabel: { fontSize: 14, color: '#666', fontWeight: '500' },
-  detailValue: { fontSize: 14, color: '#222', fontWeight: '500' },
-  cashMethod: { color: '#0d6efd', fontWeight: '600' },
-  payButton: { backgroundColor: '#5A7BF4', borderRadius: 18, justifyContent: 'center', alignItems: 'center', marginVertical: 28, paddingVertical: 15 },
-  payButtonText: { color: '#fff', fontWeight: '700', fontSize: 18 },
+  detailLabel: { fontSize: 14, color: '#666', fontWeight: '500', fontFamily:'Inter' },
+  detailValue: { fontSize: 14, color: '#222', fontWeight: '500', fontFamily:'Inter' },
+  cashMethod: { color: '#0d6efd', fontWeight: '600', fontFamily:'Inter' },
+  payButton: { backgroundColor: '#5A7BF4', borderRadius: 25, justifyContent: 'center', alignItems: 'center', marginVertical: 28, paddingVertical: 15, height:48 },
+  payButtonText: { color: '#fff', fontWeight: '700', fontSize: 18, fontFamily:'Inter' },
   modalOverlay: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.1)' },
-  modalContainer: {
-    backgroundColor: '#fff',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    alignItems: 'center',
-    paddingBottom: 36,
-    paddingTop: 32,
-    minHeight: 280,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 16,
-    elevation: 8,
-  },
-  successIconBox: {
-    backgroundColor: '#F3F5FF',
-    borderRadius: 48,
-    width: 85,
-    height: 85,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
+  modalContainer: { backgroundColor: '#fff', borderTopLeftRadius: 24, borderTopRightRadius: 24, alignItems: 'center', paddingBottom: 36, paddingTop: 32, minHeight: 280, shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.15, shadowRadius: 16, elevation: 8 },
+  successIconBox: { backgroundColor: '#F3F5FF', borderRadius: 48, width: 85, height: 85, justifyContent: 'center', alignItems: 'center', marginBottom: 12 },
   successText: { fontWeight: '700', fontSize: 20, marginTop: 18, marginBottom: 12, color: '#222' },
-  doneButton: {
-    backgroundColor: '#5A7BF4',
-    marginTop: 18,
-    borderRadius: 16,
-    width: 200,
-    alignItems: 'center',
-    paddingVertical: 13,
-    opacity: 0.95
-  },
-  doneButtonText: { color: '#fff', fontWeight: '700', fontSize: 18 },
+  doneButton: { backgroundColor: '#5A7BF4', marginTop: 18, borderRadius: 16, width: 200, alignItems: 'center', paddingVertical: 13, opacity: 0.95, height: 48 },
+  doneButtonText: { color: '#fff', fontWeight: '700', fontSize: 18, fontFamily:'Inter' },
 });
 
 export default BookingInfoScreen;

@@ -53,7 +53,7 @@ export default function RegisterScreen() {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backArrow} onPress={() => router.back()}>
+      <TouchableOpacity style={styles.backArrow} onPress={() => router.replace('/register')}>
         <Icon name="arrow-left" size={22} color="#373737" />
       </TouchableOpacity>
       <Text style={styles.header}>Let’s Get Started</Text>
