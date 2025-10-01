@@ -164,6 +164,29 @@ app.get('/bookings/:userId', (req, res) => {
   });
 });
 
+//for user profile
+app.get("/profile", (req, res) => {
+  const userId = req.query.userId;
+
+  if (!userId) {
+    return res.status(400).json({ error: "userId is required" });
+  }
+
+  db.get("SELECT id, username, email FROM users WHERE id = ?", [userId], (err, row) => {
+    if (err) {
+      console.error("Profile query error:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    if (!row) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json({ name: row.username, email: row.email });
+  });
+});
+
+
+
 // Start server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

@@ -2,42 +2,36 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/Feather';
+import { useRouter } from 'expo-router';
 
 export default function ProfileScreen() {
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
 
-  const API_URL = "http://localhost:3000";
+  const router = useRouter()  
+  const [username, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [userId , setUserId] = useState('');
+
+ 
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        // Get userId from AsyncStorage
-        const storedUserId = await AsyncStorage.getItem('userId');
-        if (!storedUserId) return;
+  const loadUserData = async () => {
+    try {
+      const id = await AsyncStorage.getItem('userId')
+      const name = await AsyncStorage.getItem('username')
+      const email = await AsyncStorage.getItem('email')
 
-        // Fetch user details from backend
-        const response = await fetch(`${API_URL}/users/${storedUserId}`);
-        const data = await response.json();
-
-        if (response.ok) {
-          setUserName(data.name || '');
-          setUserEmail(data.email || '');
-          
-          // Optional: keep them in AsyncStorage for quick access later
-          await AsyncStorage.setItem('userName', data.name || '');
-          await AsyncStorage.setItem('userEmail', data.email || '');
-        } else {
-          Alert.alert("Error", data.message || "Failed to fetch user details");
+      if (id) setUserId(id);
+      if (name) setUserName(name);
+      if (email) setUserEmail(email);
+      console.log("📦 AsyncStorage Data:", { id, name, email });
+        } catch (error) {
+            console.error("Error loading user data:", error);
         }
-      } catch (error) {
-        console.error("Profile fetch error:", error);
-        Alert.alert("Error", "Could not fetch user profile");
-      }
-    };
+        };
 
-    fetchUserData();
-  }, []);
+    loadUserData();
+}, []);
 
   return (
     <View style={styles.container}>
@@ -56,7 +50,7 @@ export default function ProfileScreen() {
           style={styles.avatar}
         />
         <View style={styles.userInfo}>
-          <Text style={styles.userName}>{userName}</Text>
+          <Text style={styles.userName}>{username}</Text>
           <Text style={styles.userEmail}>{userEmail}</Text>
         </View>
         <TouchableOpacity>
@@ -78,6 +72,23 @@ export default function ProfileScreen() {
         <Option icon={<Ionicons name="help-circle-outline" size={20} color="#63686E" />} label="FAQ,s" />
         <Option icon={<MaterialIcons name="support-agent" size={20} color="#63686E" />} label="Help & Support" />
       </View>
+
+      {/* Bottom Tab Bar */}
+      <View style={styles.tabBar}>
+        <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/mybookings')}>
+        <Icon name="home" size={20} color="#C7C7C7" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/mybookings')}>
+        <Icon name="calendar" size={20} color="#C7C7C7" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/profile')}>
+        <Icon name="heart" size={20} color="#C7C7C7" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/profile')}>
+        <Icon name="user" size={20} color="#4B75E9" />
+        <Text style={styles.tabLabelActive}>Profile</Text>
+        </TouchableOpacity>
+    </View>
     </View>
   );
 }
@@ -120,4 +131,32 @@ const styles = StyleSheet.create({
   },
   icon: { marginRight: 15 },
   optionLabel: { flex: 1, fontSize: 15, color: '#222' },
+
+    tabBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderTopWidth: 1,
+    borderTopColor: '#ececec',
+    backgroundColor: '#fff',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    paddingHorizontal: 36,
+    height: 58,
+    alignItems: 'center',
+    zIndex: 99,
+  },
+  tabBarItem: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
+  tabLabelActive: {
+    fontSize: 11,
+    color: '#4B75E9',
+    fontWeight: '600',
+    marginTop: 2,
+    fontFamily: 'Inter',
+  },
 });
