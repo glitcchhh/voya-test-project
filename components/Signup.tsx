@@ -31,7 +31,7 @@ export default function RegisterScreen() {
     }
 
     try {
-      const response = await fetch('http://192.168.1.8:3000/register', {
+      const response = await fetch('http://localhost:3000/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password }),
@@ -113,7 +113,7 @@ export default function RegisterScreen() {
         <Checkbox
           value={accepted}
           onValueChange={setAccepted}
-          color={ accepted ? '#456EFF': undefined}
+          color={ accepted ? '#4B75E9': undefined}
         />
         <Text style={styles.agreeText}>
           I agree to the{' '}
@@ -139,11 +139,11 @@ export default function RegisterScreen() {
       </View>
       <View style={styles.socialRow}>
         <TouchableOpacity style={styles.socialButton}>
-          <FontAwesome name="google" size={21} color="#EA4335" />
+          <FontAwesome name="google" size={17} color="#EA4335" />
           <Text style={styles.socialText}>Google</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.socialButton}>
-          <FontAwesome name="facebook" size={21} color="#3B5998" />
+          <FontAwesome name="facebook" size={17} color="#3B5998" />
           <Text style={styles.socialText}>Facebook</Text>
         </TouchableOpacity>
       </View>
@@ -177,12 +177,14 @@ const styles = StyleSheet.create({
     color: '#232323',
     marginBottom: 6,
     textAlign: 'center',
+    fontFamily: 'Inter',
   },
   subheader: {
     fontSize: 14,
     color: '#b2b2b2',
     marginBottom: 26,
     textAlign: 'center',
+    fontFamily: 'Inter',
   },
   inputBox: {
     flexDirection: 'row',
@@ -193,6 +195,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     height: 48,
     width: '100%',
+    fontFamily: 'Inter',
   },
   inputIcon: {
     marginRight: 8,
@@ -201,6 +204,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 15,
     color: '#232323',
+    fontFamily: 'Inter',
   },
   visibilityIcon: {
     marginLeft: 8,
@@ -215,14 +219,16 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#232323',
     marginLeft: 6,
+    fontFamily: 'Inter',
   },
   linkText: {
-    color: '#456EFF',
+    color: '#4B75E9',
     fontWeight: '500',
     textDecorationLine: 'underline',
+    fontFamily: 'Inter',
   },
   registerButton: {
-    backgroundColor: '#456EFF',
+    backgroundColor: '#4B75E9',
     borderRadius: 25,
     height: 48,
     alignItems: 'center',
@@ -234,6 +240,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 17,
     fontWeight: '600',
+    fontFamily: 'Inter',
   },
   orRow: {
     flexDirection: 'row',
@@ -247,8 +254,9 @@ const styles = StyleSheet.create({
   },
   orText: {
     marginHorizontal: 13,
-    fontSize: 15,
+    fontSize: 10,
     color: '#b2b2b2',
+    fontFamily: 'Inter',
   },
   socialRow: {
     flexDirection: 'row',
@@ -273,16 +281,19 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#232323',
     marginLeft: 6,
+    fontFamily: 'Inter',
   },
   bottomText: {
     textAlign: 'center',
     color: '#232323',
     fontSize: 14,
-    marginTop: 8,
+    marginTop: 38,
+    fontFamily: 'Inter',
   },
   loginLink: {
-    color: '#456EFF',
+    color: '#4B75E9',
     fontWeight: '600',
     textDecorationLine: 'underline',
+    fontFamily: 'Inter',
   },
 });

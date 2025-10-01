@@ -212,12 +212,15 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#818181',
     marginBottom: 1,
-    letterSpacing: 0.1
+    letterSpacing: 0.1,
+    fontFamily: 'Inter',
+  
   },
   locRegion: {
     fontSize: 16,
     fontWeight: '700',
     color: '#232323',
+    fontFamily: 'Inter',
   },
   searchCard: {
     backgroundColor: '#F6F8FC',
@@ -251,6 +254,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     marginRight: 6,
     marginBottom: 0,
+    fontFamily: 'Inter',
   },
   inputIcon: {
     marginRight: 8,
@@ -260,6 +264,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#232323',
     padding: 0,
+    fontFamily: 'Inter',
   },
   gridRow: {
     flexDirection: 'row',
@@ -278,6 +283,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#fff',
     fontWeight: '700',
+    fontFamily: 'Inter',
   },
   popularHeader: {
     flexDirection: 'row',
@@ -290,11 +296,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
     color: '#202020',
+    fontFamily: 'Inter',
   },
   viewAllText: {
     fontSize: 15,
     color: '#4B75E9',
     fontWeight: '600',
+    fontFamily: 'Inter',
   },
   hotelList: {
     paddingLeft: 17,
@@ -339,6 +347,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 13,
     color: '#202020',
+    fontFamily: 'Inter',
   },
   hotelTitle: {
     fontSize: 14,
@@ -347,10 +356,12 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 2,
     letterSpacing: 0.1,
+    fontFamily: 'Inter',
   },
   hotelSubtitle: {
     fontSize: 13,
     color: '#919191',
+    fontFamily: 'Inter',
   },
   tabBar: {
     flexDirection: 'row',
@@ -377,5 +388,6 @@ const styles = StyleSheet.create({
     color: '#4B75E9',
     fontWeight: '600',
     marginTop: 2,
+    fontFamily: 'Inter',
   },
 });

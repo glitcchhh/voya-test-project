@@ -37,6 +37,7 @@ db.serialize(() => {
       startDate TEXT NOT NULL,
       endDate TEXT NOT NULL,
       cardNumber TEXT NOT NULL,
+      status TEXT NOT NULL,
       FOREIGN KEY (userId) REFERENCES users(id)
     )
   `);
@@ -95,15 +96,15 @@ app.get('/user/:id', (req, res) => {
 
 // Create a booking with user existence check and logs
 app.post('/booking', (req, res) => {
-  const { userId, propertyName, location, price, startDate, endDate, cardNumber } = req.body;
+  const { userId, propertyName, location, price, startDate, endDate, cardNumber, status } = req.body;
 
-  if (!userId || !propertyName || !location || !price || !startDate || !endDate || !cardNumber) {
+  if (!userId || !propertyName || !location || !price || !startDate || !endDate || !cardNumber || !status) {
     return res.status(400).json({ error: 'All booking fields are required' });
   }
 
   console.log('Booking request received:', req.body);
 
-  // Check if user exists first
+  // Checking if user exists 
   db.get('SELECT id FROM users WHERE id = ?', [userId], (err, user) => {
     if (err) {
       console.error('User check error:', err);
@@ -116,14 +117,14 @@ app.post('/booking', (req, res) => {
     }
 
     // Insert booking now
-    const stmt = db.prepare('INSERT INTO bookings (userId, propertyName, location, price, startDate, endDate, cardNumber) VALUES (?,?,?,?,?,?,?)');
-    stmt.run(userId, propertyName, location, price, startDate, endDate, cardNumber, function(err) {
+    const stmt = db.prepare('INSERT INTO bookings (userId, propertyName, location, price, startDate, endDate, cardNumber,status) VALUES (?,?,?,?,?,?,?,?)');
+    stmt.run(userId, propertyName, location, price, startDate, endDate, cardNumber,status, function(err) {
       if (err) {
         console.error('Booking insert error:', err);
         return res.status(500).json({ error: err.message });
       }
       console.log('Booking inserted with id:', this.lastID);
-      res.json({ bookingId: this.lastID, userId, propertyName, location, price, startDate, endDate });
+      res.json({ bookingId: this.lastID, userId, propertyName, location, price, startDate, endDate,status });
     });
     stmt.finalize();
   });

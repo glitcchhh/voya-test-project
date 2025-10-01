@@ -183,6 +183,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: "#232323",
     letterSpacing: 0.2,
+    fontFamily: 'Inter',
   },
   heartBox: {
     position: "absolute",
@@ -191,23 +192,43 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     zIndex: 2,
   },
-  scroller: { padding: 22, paddingBottom: 34 },
-  hotelTitle: { fontSize: 19, fontWeight: "700", color: "#232323" },
-  hotelSub: { color: "#666", fontSize: 13, marginTop: 3, marginBottom: 5 },
-  reviewRow: { flexDirection: "row", alignItems: "center", marginBottom: 10 },
+  scroller: { padding: 22,
+     paddingBottom: 34
+     },
+
+  hotelTitle: { fontSize: 19, fontWeight: "700", color: "#232323" ,fontFamily: 'Inter',},
+
+  hotelSub: { color: "#666", 
+    fontSize: 13, 
+    marginTop: 3, 
+    marginBottom: 5 ,
+    fontFamily: 'Inter',
+  },
+
+  reviewRow: { flexDirection: "row", 
+    alignItems: "center", 
+    marginBottom: 10 
+  },
+
   starScore: {
     fontSize: 14,
     color: "#232323",
     fontWeight: "700",
     marginLeft: 5,
+    fontFamily: 'Inter',
   },
-  reviewBase: { color: "#b2b2b2", fontSize: 13, marginLeft: 4 },
+  reviewBase: { color: "#b2b2b2",
+    fontSize: 13,
+    marginLeft: 4 ,
+    fontFamily: 'Inter',
+  },
   sectionLabel: {
     fontWeight: "700",
     color: "#232323",
     fontSize: 15,
     marginTop: 15,
     marginBottom: 7,
+    fontFamily: 'Inter',
   },
   facilityRow: {
     flexDirection: "row",
@@ -217,7 +238,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   facItem: { alignItems: "center", width: 55, marginBottom: 10 },
-  facLabel: { marginTop: 5, color: "#232323", fontSize: 13 },
+  facLabel: { marginTop: 5, color: "#232323", fontSize: 13 ,fontFamily: 'Inter',},
   descText: {
     color: "#7d7d7d",
     fontSize: 14,
@@ -229,6 +250,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 14,
     textDecorationLine: "underline",
+    fontFamily: 'Inter',
   },
   bottomRow: {
     flexDirection: "row",
@@ -239,9 +261,9 @@ const styles = StyleSheet.create({
     borderTopColor: "#efefef",
     paddingTop: 17,
   },
-  priceText: { fontSize: 14, color: "#888", marginBottom: 1 },
-  mainPrice: { fontSize: 18, fontWeight: "700", color: "#232323" },
-  priceNight: { fontSize: 13, color: "#888", fontWeight: "400" },
+  priceText: { fontSize: 14, color: "#888", marginBottom: 1,fontFamily: 'Inter', },
+  mainPrice: { fontSize: 18, fontWeight: "700", color: "#232323" ,fontFamily: 'Inter',},
+  priceNight: { fontSize: 13, color: "#888", fontWeight: "400" ,fontFamily: 'Inter',},
   bookBtn: {
     backgroundColor: "#4B75E9",
     paddingHorizontal: 33,
@@ -249,5 +271,5 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     alignItems: "center",
   },
-  bookLabel: { color: "#fff", fontSize: 16, fontWeight: "700" },
+  bookLabel: { color: "#fff", fontSize: 16, fontWeight: "700",fontFamily: 'Inter', },
 });

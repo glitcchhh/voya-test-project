@@ -9,8 +9,11 @@ import {
   FlatList,
   StatusBar,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
-
+import { Stack } from "expo-router";
+import { useFonts, Poppins_600SemiBold, Poppins_400Regular } from '@expo-google-fonts/poppins';
+import AppLoading from 'expo-app-loading';
 import { useRouter } from 'expo-router';
 
 const { width, height } = Dimensions.get('window');
@@ -21,9 +24,9 @@ const onboardingData = [
     title: 'Find Your Perfect Stay,\nAnytime , Anywhere',
     description: 'Lorem ipsum dolor sit amet consectetur.\nLectus dictum ut nunc sodales a. Nibh tortor malesuada amet',
     images: [
-      'https://images.unsplash.com/photo-1509130446498-104dcb6e2b88?w=600',
       'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600',
-      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600',
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600',
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600',
     ],
   },
   {
@@ -55,7 +58,8 @@ const PILL_SPACING = 13;
 const OnboardingScreen = () => {
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const flatListRef = useRef<FlatList>(null);
+  const flatListRef = useRef<FlatList>(null); 
+
 
   const handleSkip = () => {
     router.replace('/register');
@@ -156,17 +160,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'flex-end',
-    marginTop: 12,
+    marginTop: 44,
     marginBottom: 33,
     gap: PILL_SPACING,
   },
   pillWrapper: {
     width: PILL_WIDTH,
     height: IMAGE_HEIGHT,
-    borderRadius: 27,
+    borderRadius: 25,
     overflow: 'hidden',
     backgroundColor: '#eef2f5',
-    marginHorizontal: PILL_SPACING / 2,
+    marginHorizontal: PILL_SPACING / 5,
   },
   middlePill: {
     marginTop: -13,
@@ -179,14 +183,15 @@ const styles = StyleSheet.create({
   textContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 22,
+    paddingHorizontal: 17,
   },
   title: {
     fontSize: width > 400 ? 20 : 19,
-    fontWeight: '700',
+    fontWeight: '600',
     textAlign: 'center',
-    marginBottom: 12,
+    marginBottom: 8,
     color: '#181818',
+    fontFamily : 'Inter',
     lineHeight: width > 400 ? 30 : 28,
   },
   description: {
@@ -194,14 +199,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#b7bac0',
     lineHeight: width > 400 ? 23 : 19,
-    fontWeight: '600',
+    fontWeight: '500',
+    fontFamily : 'Inter',
   },
   footer: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 28,
+    paddingHorizontal: 22,
+    marginTop : 12,
     paddingBottom: Platform.OS === 'web' ? 39 : 28,
   },
   skipText: {

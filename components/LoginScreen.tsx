@@ -165,12 +165,14 @@ const styles = StyleSheet.create({
     color: '#181818',
     marginBottom: 5,
     textAlign: 'center',
+    fontFamily: 'Inter',
   },
   subheader: {
     fontSize: 14,
     color: '#A2A5AD',
     marginBottom: 19,
     textAlign: 'center',
+    fontFamily: 'Inter',
   },
   inputBox: {
     flexDirection: 'row',
@@ -181,6 +183,7 @@ const styles = StyleSheet.create({
     marginBottom: 17,
     height: 48,
     width: '100%',
+    fontFamily: 'Inter',
   },
   inputIcon: {
     marginRight: 9,
@@ -189,6 +192,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 15,
     color: '#181818',
+    fontFamily: 'Inter',
   },
   row: {
     flexDirection: 'row',
@@ -207,6 +211,7 @@ const styles = StyleSheet.create({
     color: '#181818',
     marginLeft: -3,
     flex: 1,
+    fontFamily: 'Inter',
   },
   forgotLink: {
     marginLeft: 'auto',
@@ -216,11 +221,12 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     fontWeight: '500',
     fontSize: 13,
+    fontFamily: 'Inter',
   },
   loginButton: {
     backgroundColor: '#4B75E9',
     borderRadius: 25,
-    height: 60,
+    height: 48,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 18,
@@ -231,11 +237,13 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 17,
     fontWeight: '600',
+    fontFamily: 'Inter',
   },
   orRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 7,
+    marginVertical: 17,
+    marginBottom: 30,
   },
   divider: {
     flex: 1,
@@ -247,6 +255,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#b2b2b2',
     fontWeight: '500',
+    fontFamily: 'Inter',
+    fontSize: 10,
+    
   },
   socialRow: {
     flexDirection: 'row',
@@ -271,16 +282,19 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#232323',
     marginLeft: 6,
+    fontFamily: 'Inter',
   },
   bottomText: {
     textAlign: 'center',
     color: '#232323',
     fontSize: 14,
-    marginTop: 7,
+    marginTop: 38,
+    fontFamily: 'Inter',
   },
   loginLink: {
     color: '#4B75E9',
     fontWeight: '600',
     textDecorationLine: 'underline',
+    fontFamily: 'Inter',
   },
 });

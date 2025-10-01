@@ -14,7 +14,7 @@ export default function RegisterScreen() {
       />
       <View style={styles.content}>
         <Text style={styles.logo}>
-          <Text style={{ color: '#456EFF' }}>V</Text><Text style={{ color: '#232323' }}>oya</Text>
+          <Text style={{ color: '#456EFF',fontFamily: 'Inter',}}>V</Text><Text style={{ color: '#232323',fontFamily: 'Inter', }}>oya</Text>
         </Text>
         <Text style={styles.title}>Your Perfect Stay is Just a Click Away!</Text>
         <Text style={styles.subtitle}>
@@ -61,33 +61,41 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: '600',
     marginBottom: 12,
     textAlign: 'center',
     color: '#232323',
+    fontFamily : 'Inter',
   },
   subtitle: {
     fontSize: 14,
     color: '#888',
     marginBottom: 32,
     textAlign: 'center',
+    fontFamily : 'Inter',
+    fontWeight: '400',
   },
   registerButton: {
     backgroundColor: '#4B75E9',
     borderRadius: 24,
     paddingVertical: 14,
     paddingHorizontal: 60,
-    marginBottom: 24,
+    marginBottom: 14,
+    marginTop: 24,
   },
   registerButtonText: {
     color: '#fff',
     fontWeight: '600',
     fontSize: 18,
+    fontFamily : 'Inter',
+    fontWeight: '500',
   },
   footerText: {
-    fontSize: 14,
-    color: '#232323',
     textAlign: 'center',
+    color: '#232323',
+    fontSize: 14,
+    marginTop: 38,
+    fontFamily: 'Inter',
   },
   loginText: {
     color: '#4B75E9',

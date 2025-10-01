@@ -7,7 +7,7 @@ const db = new sqlite3.Database('./database.sqlite', (err) => {
 });
 
 // Print all bookings
-db.all('SELECT * FROM bookings', [], (err, rows) => {
+db.all('SELECT * FROM BOOKINGS;', [], (err, rows) => {
   if (err) {
     console.error('Error fetching bookings:', err);
   } else if (rows.length === 0) {

@@ -60,7 +60,8 @@ const BookingInfoScreen = () => {
         price: total,
         startDate: checkIn,
         endDate: checkOut,
-        cardNumber: 'N/A'
+        cardNumber: 'N/A',
+        status: 'booked'
       };
 
       const response = await fetch('http://localhost:3000/booking', {
@@ -78,7 +79,7 @@ const BookingInfoScreen = () => {
       setShowSuccess(true);
       setTimeout(() => {
         setShowSuccess(false);
-        router.replace('/ereciept');
+        router.replace('/home');
       }, 2000);
 
     } catch (error: any) {
