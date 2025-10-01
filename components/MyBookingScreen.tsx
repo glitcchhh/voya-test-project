@@ -105,9 +105,27 @@ const MyBookingsScreen: React.FC = () => {
           <TouchableOpacity style={styles.cancelBtn} onPress={() => cancelBooking(item.id)}>
             <Text style={styles.cancelTxt}>Cancel</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.ereceiptBtn}>
-            <Text style={styles.ereceiptTxt}>E-Receipt</Text>
-          </TouchableOpacity>
+          <TouchableOpacity
+  style={styles.ereceiptBtn}
+  onPress={() =>
+    router.push({
+      pathname: '/ereceipt',
+      params: {
+        title: item.propertyName,
+        city: item.location,
+        checkIn: item.startDate,
+        checkOut: item.endDate,
+        guests: '1', // Replace if you have actual guest info
+        rooms: '1',  // Replace if you have actual room info
+        price: item.price,
+        status: item.status,
+        userId: userId,
+      },
+    })
+  }
+>
+  <Text style={styles.ereceiptTxt}>E-Receipt</Text>
+</TouchableOpacity>
         </View>
       )}
       {/* Show only E-Receipt in cancelled */}
