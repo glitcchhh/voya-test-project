@@ -180,7 +180,7 @@ export default function HomeScreen() {
         <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/mybookings')}>
           <Icon name="calendar" size={20} color="#C7C7C7" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/profile')}>
+        <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/favorites')}>
           <Icon name="heart" size={20} color="#C7C7C7" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/profile')}>

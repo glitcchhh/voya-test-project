@@ -48,6 +48,24 @@ db.serialize(() => {
       FOREIGN KEY (userId) REFERENCES users(id)
     )
   `);
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS favorites (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      userId INTEGER NOT NULL,
+      hotelId TEXT NOT NULL,
+      title TEXT NOT NULL,
+      city TEXT,
+      img TEXT,
+      rating REAL,
+      checkIn TEXT,
+      checkOut TEXT,
+      guests INTEGER,
+      rooms INTEGER,
+      createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (userId) REFERENCES users(id)
+    )
+  `);
 });
 
 // Test route
@@ -184,6 +202,101 @@ app.get("/profile", (req, res) => {
     res.json({ name: row.username, email: row.email });
   });
 });
+
+app.post('/favorites', (req, res) => {
+  const { userId, hotel } = req.body;
+  
+  // Validate required fields
+  if (!userId || !hotel) {
+    return res.status(400).json({ error: 'userId and hotel are required' });
+  }
+  
+  if (!hotel.id) {
+    return res.status(400).json({ error: 'hotel.id is required' });
+  }
+
+  const stmt = db.prepare(`
+    INSERT INTO favorites (userId, hotelId, title, city, img, rating, checkIn, checkOut, guests, rooms)
+    VALUES (?,?,?,?,?,?,?,?,?,?)
+  `);
+
+  stmt.run(
+    userId,
+    hotel.id,
+    hotel.title,
+    hotel.city,
+    hotel.img,
+    hotel.rating,
+    hotel.checkIn || null,
+    hotel.checkOut || null,
+    hotel.guests,
+    hotel.rooms,
+    function (err) {
+      if (err) {
+        console.error("Favorite insert error:", err);
+        return res.status(500).json({ error: err.message });
+      }
+      res.json({ id: this.lastID, message: "Hotel added to favorites" });
+    }
+  );
+
+  stmt.finalize();
+});
+
+// Check if a specific hotel is favorited by user
+app.get('/favorites/:userId/:hotelId', (req, res) => {
+  const { userId, hotelId } = req.params;
+  
+  db.get(
+    'SELECT * FROM favorites WHERE userId = ? AND hotelId = ?',
+    [userId, hotelId],
+    (err, row) => {
+      if (err) {
+        console.error("Check favorite error:", err);
+        return res.status(500).json({ error: err.message });
+      }
+      res.json({ isFavorite: !!row, favorite: row });
+    }
+  );
+});
+// Get all favorites for a user
+app.get('/favorites/:userId', (req, res) => {
+  db.all('SELECT * FROM favorites WHERE userId = ?', [req.params.userId], (err, rows) => {
+    if (err) {
+      console.error("Favorites query error:", err);
+      return res.status(500).json({ error: err.message });
+    }
+    res.json(rows);
+  });
+});
+
+// Check if a specific hotel is favorited by user
+app.get('/favorites/:userId/:hotelId', (req, res) => {
+  const { userId, hotelId } = req.params;
+  
+  db.get(
+    'SELECT * FROM favorites WHERE userId = ? AND hotelId = ?',
+    [userId, hotelId],
+    (err, row) => {
+      if (err) {
+        console.error("Check favorite error:", err);
+        return res.status(500).json({ error: err.message });
+      }
+      res.json({ isFavorite: !!row, favorite: row });
+    }
+  );
+});
+
+// Remove a favorite (optional)
+app.delete('/favorites/:id', (req, res) => {
+  const stmt = db.prepare('DELETE FROM favorites WHERE id = ?');
+  stmt.run(req.params.id, function (err) {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ message: "Favorite removed", affectedRows: this.changes });
+  });
+  stmt.finalize();
+});
+
 
 
 

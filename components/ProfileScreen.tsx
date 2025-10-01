@@ -75,13 +75,13 @@ export default function ProfileScreen() {
 
       {/* Bottom Tab Bar */}
       <View style={styles.tabBar}>
-        <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/mybookings')}>
+        <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/home')}>
         <Icon name="home" size={20} color="#C7C7C7" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/mybookings')}>
         <Icon name="calendar" size={20} color="#C7C7C7" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/profile')}>
+        <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/favorites')}>
         <Icon name="heart" size={20} color="#C7C7C7" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/profile')}>
