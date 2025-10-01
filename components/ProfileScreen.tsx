@@ -37,7 +37,7 @@ export default function ProfileScreen() {
     <View style={styles.container}>
       {/* Header & Profile */}
       <View style={styles.header}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.profileTitle}>Profile</Text>

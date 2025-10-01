@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/Feather";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 
@@ -148,6 +148,23 @@ export default function FavoritesScreen() {
           )}
         />
       )}
+
+      {/* Bottom Tab Bar */}
+            <View style={styles.tabBar}>
+              <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/home')}>
+                <Icon name="home" size={20} color="#C7C7C7" />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/mybookings')}>
+                <Icon name="calendar" size={20} color="#C7C7C7" />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/favorites')}>
+                <Icon name="heart" size={20} color="#4B75E9" />
+                <Text style={styles.tabLabelActive}>Favorites</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/profile')}>
+                <Icon name="user" size={20} color="#C7C7C7" />
+              </TouchableOpacity>
+            </View>
     </View>
   );
 }
@@ -295,5 +312,33 @@ const styles = StyleSheet.create({
     color: "#888",
     fontWeight: "500",
     fontFamily: "Inter",
+  },
+
+   tabBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderTopWidth: 1,
+    borderTopColor: '#ececec',
+    backgroundColor: '#fff',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    paddingHorizontal: 36,
+    height: 58,
+    alignItems: 'center',
+    zIndex: 99,
+  },
+  tabBarItem: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
+  tabLabelActive: {
+    fontSize: 11,
+    color: '#4B75E9',
+    fontWeight: '600',
+    marginTop: 2,
+    fontFamily: 'Inter',
   },
 });

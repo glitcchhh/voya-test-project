@@ -179,22 +179,24 @@ const MyBookingsScreen: React.FC = () => {
           style={{ flex: 1 }}
         />
       )}
-      {/* Bottom Tab (icon bar) */}
-      <View style={styles.bottomBar}>
-        <TouchableOpacity onPress={() => router.push('/home')}>
-          <Icon name="home" size={20} color="#ccc" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => router.push('/mybookings')}>
-          <Icon name="calendar" size={20} color="#5A7BF4" />
-          <Text style={styles.tabLabelActive}>Calender</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => router.push('/favorites')}>
-          <Icon name="heart" size={20} color="#ccc" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => router.push('/profile')}>
-          <Icon name="user" size={20} color="#ccc" />
-        </TouchableOpacity>
-      </View>
+      
+      {/* Bottom Tab Bar */}
+                  <View style={styles.tabBar}>
+                    <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/home')}>
+                      <Icon name="home" size={20} color="#C7C7C7" />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/mybookings')}>
+                      <Icon name="calendar" size={20} color="#4B75E9" />
+                      <Text style={styles.tabLabelActive}>Calender</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/favorites')}>
+                      <Icon name="heart" size={20} color="#C7C7C7" />
+      
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/profile')}>
+                      <Icon name="user" size={20} color="#C7C7C7" />
+                    </TouchableOpacity>
+                  </View>
     </View>
   );
 };
@@ -278,14 +280,25 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   ereceiptTxt: { color: "#fff", fontWeight: "700", fontSize: 16 },
-  bottomBar: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    backgroundColor: "#fff",
-    paddingVertical: 10,
+     tabBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     borderTopWidth: 1,
-    borderTopColor: "#f4f4f4",
+    borderTopColor: '#ececec',
+    backgroundColor: '#fff',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    paddingHorizontal: 36,
     height: 58,
+    alignItems: 'center',
+    zIndex: 99,
+  },
+  tabBarItem: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
   },
   tabLabelActive: {
     fontSize: 11,
@@ -294,6 +307,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
     fontFamily: 'Inter',
   },
+  
 });
 
 export default MyBookingsScreen;
