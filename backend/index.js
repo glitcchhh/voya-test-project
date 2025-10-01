@@ -7,7 +7,14 @@ const bcrypt = require('bcrypt');
 const app = express();
 const port = 3000;
 
-app.use(cors({ origin: '*', methods: ['GET','POST'], allowedHeaders: ['Content-Type'] }));
+// FIXED: Proper CORS configuration
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
+  credentials: true
+}));
+
 app.use(bodyParser.json());
 
 // Connect DB
@@ -94,17 +101,19 @@ app.get('/user/:id', (req, res) => {
   });
 });
 
-// Create a booking with user existence check and logs
+// Create a booking (defaults status to 'booked')
 app.post('/booking', (req, res) => {
-  const { userId, propertyName, location, price, startDate, endDate, cardNumber, status } = req.body;
+  const { userId, propertyName, location, price, startDate, endDate, cardNumber } = req.body;
 
-  if (!userId || !propertyName || !location || !price || !startDate || !endDate || !cardNumber || !status) {
+  // Default status is 'booked'
+  const status = req.body.status || 'booked';
+
+  if (!userId || !propertyName || !location || !price || !startDate || !endDate || !cardNumber) {
     return res.status(400).json({ error: 'All booking fields are required' });
   }
 
   console.log('Booking request received:', req.body);
 
-  // Checking if user exists 
   db.get('SELECT id FROM users WHERE id = ?', [userId], (err, user) => {
     if (err) {
       console.error('User check error:', err);
@@ -116,18 +125,31 @@ app.post('/booking', (req, res) => {
       return res.status(400).json({ error: 'User not found' });
     }
 
-    // Insert booking now
-    const stmt = db.prepare('INSERT INTO bookings (userId, propertyName, location, price, startDate, endDate, cardNumber,status) VALUES (?,?,?,?,?,?,?,?)');
-    stmt.run(userId, propertyName, location, price, startDate, endDate, cardNumber,status, function(err) {
+    const stmt = db.prepare('INSERT INTO bookings (userId, propertyName, location, price, startDate, endDate, cardNumber, status) VALUES (?,?,?,?,?,?,?,?)');
+    stmt.run(userId, propertyName, location, price, startDate, endDate, cardNumber, status, function(err) {
       if (err) {
         console.error('Booking insert error:', err);
         return res.status(500).json({ error: err.message });
       }
       console.log('Booking inserted with id:', this.lastID);
-      res.json({ bookingId: this.lastID, userId, propertyName, location, price, startDate, endDate,status });
+      res.json({ bookingId: this.lastID, userId, propertyName, location, price, startDate, endDate, status });
     });
     stmt.finalize();
   });
+});
+
+// Patch booking status (for cancellation)
+app.patch('/booking/:id', (req, res) => {
+  const id = req.params.id;
+  const { status } = req.body;
+  if (!status) return res.status(400).json({ error: 'Status required' });
+
+  const stmt = db.prepare('UPDATE bookings SET status = ? WHERE id = ?');
+  stmt.run(status, id, function(err) {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ message: 'Booking updated', affectedRows: this.changes });
+  });
+  stmt.finalize();
 });
 
 // Get bookings for a user

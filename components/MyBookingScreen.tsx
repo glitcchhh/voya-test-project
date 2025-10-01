@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useRouter } from 'expo-router';
@@ -8,7 +8,6 @@ const SAMPLE_IMAGE =
   "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80";
 
 const TABS = ["Upcoming", "Completed", "Cancelled"];
-const router = useRouter();
 
 type Booking = {
   id: number;
@@ -17,6 +16,7 @@ type Booking = {
   price: number;
   startDate: string;
   endDate: string;
+  status: string; // must exist in your database
 };
 
 const MyBookingsScreen: React.FC = () => {
@@ -24,8 +24,8 @@ const MyBookingsScreen: React.FC = () => {
   const [tab, setTab] = useState(0);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<number | null>(null);
+  const router = useRouter();
 
-  // Load userId from Async Storage
   useEffect(() => {
     const loadUserId = async () => {
       try {
@@ -40,7 +40,6 @@ const MyBookingsScreen: React.FC = () => {
     loadUserId();
   }, []);
 
-  // Fetch bookings once userId is known
   useEffect(() => {
     if (userId === null) return;
     setLoading(true);
@@ -53,7 +52,29 @@ const MyBookingsScreen: React.FC = () => {
       .catch(() => setLoading(false));
   }, [userId]);
 
-  const filteredBookings = tab === 0 ? bookings : [];
+  // Only show booked in Upcoming and cancelled in Cancelled
+  const filteredBookings = bookings.filter(b =>
+    (tab === 0 && b.status === "booked") ||
+    (tab === 2 && b.status === "cancelled")
+  );
+
+  const cancelBooking = async (bookingId: number) => {
+    try {
+      const res = await fetch(`http://localhost:3000/booking/${bookingId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "cancelled" }),
+      });
+      if (!res.ok) throw new Error("Cancel failed");
+      // Update local state
+      setBookings(prev => prev.map(b =>
+        b.id === bookingId ? { ...b, status: "cancelled" } : b
+      ));
+      Alert.alert("Cancellation successful");
+    } catch {
+      Alert.alert("Error", "Could not cancel booking.");
+    }
+  };
 
   const renderBooking = ({ item }: { item: Booking }) => (
     <View style={styles.card}>
@@ -78,14 +99,26 @@ const MyBookingsScreen: React.FC = () => {
           <Text style={styles.perMonth}>/month</Text>
         </View>
       </View>
-      <View style={styles.actionRow}>
-        <TouchableOpacity style={styles.cancelBtn}>
-          <Text style={styles.cancelTxt}>Cancel</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.ereceiptBtn}>
-          <Text style={styles.ereceiptTxt}>E-Receipt</Text>
-        </TouchableOpacity>
-      </View>
+      {/* Show actions only on upcoming ("booked") */}
+      {tab === 0 && (
+        <View style={styles.actionRow}>
+          <TouchableOpacity style={styles.cancelBtn} onPress={() => cancelBooking(item.id)}>
+            <Text style={styles.cancelTxt}>Cancel</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.ereceiptBtn}>
+            <Text style={styles.ereceiptTxt}>E-Receipt</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      {/* Show only E-Receipt in cancelled */}
+      {tab === 2 && (
+        <View style={styles.actionRow}>
+          <View style={{ flex: 1 }} />
+          <TouchableOpacity style={styles.ereceiptBtn}>
+            <Text style={styles.ereceiptTxt}>E-Receipt</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 
@@ -107,7 +140,6 @@ const MyBookingsScreen: React.FC = () => {
         <Text style={styles.headerTitle}>My Booking</Text>
         <View style={{ width: 22 }} />
       </View>
-
       {/* Tabs */}
       <View style={styles.tabRow}>
         {TABS.map((item, idx) => (
@@ -117,7 +149,6 @@ const MyBookingsScreen: React.FC = () => {
           </TouchableOpacity>
         ))}
       </View>
-
       {/* Bookings */}
       {loading ? (
         <ActivityIndicator style={{ marginTop: 40 }} />
@@ -125,27 +156,26 @@ const MyBookingsScreen: React.FC = () => {
         <FlatList
           data={filteredBookings}
           renderItem={renderBooking}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={item => item.id.toString()}
           contentContainerStyle={{ paddingBottom: 60 }}
           style={{ flex: 1 }}
         />
       )}
-
       {/* Bottom Tab (icon bar) */}
       <View style={styles.bottomBar}>
-    <TouchableOpacity onPress={() => router.push('/home')}>
-      <Icon name="home" size={24} color="#ccc" />
-    </TouchableOpacity>
-    <TouchableOpacity onPress={() => router.push('/mybookings')}>
-      <Icon name="calendar-today" size={24} color="#5A7BF4" />
-    </TouchableOpacity>
-    <TouchableOpacity onPress={() => router.push('/favorites')}>
-      <Icon name="favorite-border" size={24} color="#ccc" />
-    </TouchableOpacity>
-    <TouchableOpacity onPress={() => router.push('/profile')}>
-      <Icon name="person-outline" size={24} color="#ccc" />
-    </TouchableOpacity>
-  </View>
+        <TouchableOpacity onPress={() => router.push('/home')}>
+          <Icon name="home" size={24} color="#ccc" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push('/mybookings')}>
+          <Icon name="calendar-today" size={24} color="#5A7BF4" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push('/favorites')}>
+          <Icon name="favorite-border" size={24} color="#ccc" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push('/profile')}>
+          <Icon name="person-outline" size={24} color="#ccc" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
