@@ -130,7 +130,7 @@ const BookingInfoScreen = () => {
               <Text style={styles.rating}>{rating}</Text>
             </View>
             <Text style={styles.price}>
-              ${price} <Text style={styles.monthText}>/month</Text>
+              ₹{price} <Text style={styles.monthText}>/month</Text>
             </Text>
           </View>
         </View>
@@ -151,12 +151,12 @@ const BookingInfoScreen = () => {
 
         {/* Payment Details */}
         <Text style={styles.sectionTitle}>Payment Details</Text>
-        <DetailRow label="Amount" value={`$${total}`} />
+        <DetailRow label="Amount" value={`₹${total}`} />
         <DetailRow label="Payment Method" value="Cash" valueStyle={styles.cashMethod} />
 
         {/* Pay Button */}
         <TouchableOpacity style={styles.payButton} onPress={handlePay}>
-          <Text style={styles.payButtonText}>Pay ${total}</Text>
+          <Text style={styles.payButtonText}>Pay ₹{total}</Text>
         </TouchableOpacity>
       </ScrollView>
 
