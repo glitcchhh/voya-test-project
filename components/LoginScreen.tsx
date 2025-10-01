@@ -202,12 +202,12 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   checkbox: {
-    width: 21,
-    height: 21,
+    width: 18,
+    height: 18,
     marginRight: 8,
   },
   rememberText: {
-    fontSize: 13,
+    fontSize: 12,
     color: '#181818',
     marginLeft: -3,
     flex: 1,
@@ -219,8 +219,8 @@ const styles = StyleSheet.create({
   forgotText: {
     color: '#4B75E9',
     textDecorationLine: 'underline',
-    fontWeight: '500',
-    fontSize: 13,
+    fontWeight: '700',
+    fontSize: 12,
     fontFamily: 'Inter',
   },
   loginButton: {
@@ -289,11 +289,12 @@ const styles = StyleSheet.create({
     color: '#232323',
     fontSize: 14,
     marginTop: 38,
+    fontWeight: '500',
     fontFamily: 'Inter',
   },
   loginLink: {
     color: '#4B75E9',
-    fontWeight: '600',
+    fontWeight: '500',
     textDecorationLine: 'underline',
     fontFamily: 'Inter',
   },

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Icon from "react-native-vector-icons/MaterialIcons";
+import Icon from 'react-native-vector-icons/Feather';
 import { useRouter } from 'expo-router';
 
 const SAMPLE_IMAGE =
@@ -164,16 +164,17 @@ const MyBookingsScreen: React.FC = () => {
       {/* Bottom Tab (icon bar) */}
       <View style={styles.bottomBar}>
         <TouchableOpacity onPress={() => router.push('/home')}>
-          <Icon name="home" size={24} color="#ccc" />
+          <Icon name="home" size={20} color="#ccc" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => router.push('/mybookings')}>
-          <Icon name="calendar-today" size={24} color="#5A7BF4" />
+          <Icon name="calendar" size={20} color="#5A7BF4" />
+          <Text style={styles.tabLabelActive}>Calender</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => router.push('/favorites')}>
-          <Icon name="favorite-border" size={24} color="#ccc" />
+          <Icon name="heart" size={20} color="#ccc" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => router.push('/profile')}>
-          <Icon name="person-outline" size={24} color="#ccc" />
+          <Icon name="user" size={20} color="#ccc" />
         </TouchableOpacity>
       </View>
     </View>
@@ -253,7 +254,7 @@ const styles = StyleSheet.create({
   },
   cancelTxt: { color: "#6a7bb6", fontWeight: "600", fontSize: 16 },
   ereceiptBtn: {
-    backgroundColor: "#5A7BF4",
+    backgroundColor: "#4B75E9",
     paddingVertical: 10,
     paddingHorizontal: 36,
     borderRadius: 15,
@@ -266,6 +267,14 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderTopWidth: 1,
     borderTopColor: "#f4f4f4",
+    height: 58,
+  },
+  tabLabelActive: {
+    fontSize: 11,
+    color: '#4B75E9',
+    fontWeight: '600',
+    marginTop: 2,
+    fontFamily: 'Inter',
   },
 });
 

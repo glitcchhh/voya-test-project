@@ -1,17 +1,22 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, FlatList, Dimensions } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import RNPickerSelect from 'react-native-picker-select';
 import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import { Dimensions, FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
+import Icon from 'react-native-vector-icons/Feather';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CalendarModal from './ui/CalenderModal'; // Adjust this path as needed
 
 const { width } = Dimensions.get('window');
 
 const hotels = [
   { id: '1', title: 'Elysium Gardens', city: 'London, England', img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400', rating: 4.5 },
-  { id: '2', title: 'California, USA', city: 'London, England', img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400', rating: 4.5 },
+  { id: '2', title: 'California Coast', city: 'Los Angeles, USA', img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400', rating: 4.3 },
+  { id: '3', title: 'Sunny Beach', city: 'Miami, USA', img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400', rating: 4.7 },
+  { id: '4', title: 'Mountain View', city: 'Denver, USA', img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400', rating: 4.6 },
+  { id: '5', title: 'City Lights', city: 'New York, USA', img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400', rating: 4.8 },
+  { id: '6', title: 'Desert Oasis', city: 'Phoenix, USA', img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400', rating: 4.1 },
+  { id: '7', title: 'Emerald Bay', city: 'San Francisco, USA', img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400', rating: 4.4 },
 ];
 
 export default function HomeScreen() {
@@ -175,10 +180,10 @@ export default function HomeScreen() {
         <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/mybookings')}>
           <Icon name="calendar" size={20} color="#C7C7C7" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.tabBarItem}>
+        <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/profile')}>
           <Icon name="heart" size={20} color="#C7C7C7" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.tabBarItem}>
+        <TouchableOpacity style={styles.tabBarItem} onPress={() => router.replace('/profile')}>
           <Icon name="user" size={20} color="#C7C7C7" />
         </TouchableOpacity>
       </View>

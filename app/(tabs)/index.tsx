@@ -6,20 +6,20 @@ import OnboardingScreen from '@/components/OnboardingScreen';
 
 export default function Index() {
   const [showSplash, setShowSplash] = useState(true);
-  const fadeAnim = useRef(new Animated.Value(1)).current; // Start fully visible
+  const fadeAnim = useRef(new Animated.Value(1)).current; 
   const router = useRouter();
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      // Start fade out
+      // fade out
       Animated.timing(fadeAnim, {
         toValue: 0,
-        duration: 800, // fade duration (ms)
+        duration: 800, // fade duration 
         useNativeDriver: true,
       }).start(() => {
-        // After fade out, hide splash + navigate
+  
         setShowSplash(false);
-        router.replace('/(tabs)');
+        router.replace('/onboard');
       });
     }, 2500);
 

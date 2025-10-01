@@ -8,7 +8,7 @@ export default function RegisterScreen() {
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80' }}
+        source={require('../assets/images/registerscreenimg.png')}
         style={styles.headerImage}
         resizeMode="cover"
       />
@@ -39,14 +39,14 @@ const styles = StyleSheet.create({
   },
   headerImage: {
     width: '100%',
-    height: 230,
+    height: 300,
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    opacity: 0.5,
+    opacity: 0.7,
   },
   content: {
     flex: 1,
@@ -68,12 +68,12 @@ const styles = StyleSheet.create({
     fontFamily : 'Inter',
   },
   subtitle: {
-    fontSize: 14,
-    color: '#888',
+    fontSize: 13,
+    color: '#A2A5AD',
     marginBottom: 32,
     textAlign: 'center',
     fontFamily : 'Inter',
-    fontWeight: '400',
+    fontWeight: '500',
   },
   registerButton: {
     backgroundColor: '#4B75E9',
