@@ -19,17 +19,17 @@ const onboardingData = [
   {
     id: '1',
     title: 'Find Your Perfect Stay,\nAnytime , Anywhere',
-    description: 'Lorem ipsum dolor sit amet consectetur.\nLectus dictum ut nunc sodales a. Nibh tortor malesuada amet',
+    description: 'Discover handpicked stays that match your lifestyle.',
     images: [
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600',
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600',
+      'https://images.unsplash.com/photo-1493558103817-58b2924bce98?w=600',
+      'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=600',
       'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600',
     ],
   },
   {
     id: '2',
     title: 'Book Your Dream Hotel in Just a Tap',
-    description: 'Lorem ipsum dolor sit amet consectetur.\nLectus dictum ut nunc sodales a. Nibh tortor malesuada amet',
+    description: 'From cozy getaways to luxury escapes.',
     images: [
       'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600',
       'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?w=600',
@@ -39,9 +39,9 @@ const onboardingData = [
   {
     id: '3',
     title: 'Relax and enjoy your trip with Voya',
-    description: 'Lorem ipsum dolor sit amet consectetur.\nLectus dictum ut nunc sodales a. Nibh tortor malesuada amet',
+    description: ' Book your stay with ease and comfort.',
     images: [
-      'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?w=600',
+      'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600',
       'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?w=600',
       'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600',
     ],

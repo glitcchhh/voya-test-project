@@ -24,8 +24,7 @@ export default function LoginScreen() {
       Alert.alert("Error", "Please enter both email and password");
       return;
     }
-
-
+    
     try {
       setLoading(true);
 

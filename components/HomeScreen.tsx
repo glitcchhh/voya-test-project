@@ -96,6 +96,8 @@ export default function HomeScreen() {
             <Icon name="calendar" size={17} color="#B2B2B2" style={styles.inputIcon} />
             <Text style={styles.input}>{checkOut ? formatDate(checkOut) : 'Check out'}</Text>
           </TouchableOpacity>
+
+          
         </View>
 
         {/* Calendar Modals */}
