@@ -12,4 +12,4 @@ This project is a mobile application built with **React Native** for the fronten
 - **CORS** – Middleware for cross-origin requests  
 - **SQLite** – Lightweight relational database  
 
-## App was tested on react native expo web//
+## App was tested on react native expo web
