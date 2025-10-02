@@ -11,9 +11,6 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import { Stack } from "expo-router";
-import { useFonts, Poppins_600SemiBold, Poppins_400Regular } from '@expo-google-fonts/poppins';
-import AppLoading from 'expo-app-loading';
 import { useRouter } from 'expo-router';
 
 const { width, height } = Dimensions.get('window');

@@ -43,6 +43,11 @@ export default function BookingScreen() {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
+                <View style={styles.backInnerBtn}>
+                  <Icon name="arrow-left" size={22} color="#232323" />
+                </View>
+              </TouchableOpacity>
       {/* Header */}
       <Text style={styles.header}>Booking Info</Text>
 
@@ -157,6 +162,17 @@ export default function BookingScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff', paddingHorizontal: 18, paddingTop: 36 },
+
+  backBtn: { position: "absolute", top: 18, left: 15, zIndex: 5 },
+  backInnerBtn: {
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    padding: 5,
+    borderColor: "#ffffffff",
+    borderWidth: 1.5,
+    alignItems: "center",
+    justifyContent: "center",
+  },
 
   header: { fontSize: 20, fontWeight: '700', color: '#222', marginBottom: 18, alignSelf: 'center',fontFamily:'Inter', },
 

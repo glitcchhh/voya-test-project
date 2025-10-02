@@ -24,7 +24,7 @@ export default function ProfileScreen() {
       if (id) setUserId(id);
       if (name) setUserName(name);
       if (email) setUserEmail(email);
-      console.log("📦 AsyncStorage Data:", { id, name, email });
+      console.log(" AsyncStorage Data:", { id, name, email });
         } catch (error) {
             console.error("Error loading user data:", error);
         }

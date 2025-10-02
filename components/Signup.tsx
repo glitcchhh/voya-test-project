@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useRouter } from 'expo-router';
 import Checkbox from 'expo-checkbox';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('window');
 
@@ -22,34 +23,52 @@ export default function RegisterScreen() {
   const [password, setPassword] = useState('');
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [accepted, setAccepted] = useState(false);
+  const API_URL = "http://localhost:3000"; 
 
-  // Funct to register 
-  const handleRegister = async () => {
-    if (!username || !email || !password) {
-      Alert.alert('Error', 'Please fill all fields');
-      return;
-    }
+  // Function to register
 
-    try {
-      const response = await fetch('http://localhost:3000/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, email, password }),
-      });
+const handleRegister = async () => {
+  if (!username || !email || !password) {
+    Alert.alert("Error", "Please fill all fields");
+    return;
+  }
 
-      const data = await response.json();
+  try {
+    const response = await fetch(`${API_URL}/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, email, password }),
+    });
 
-      if (response.ok) {
-        Alert.alert('Success', `User registered with ID: ${data.id}`);
-        router.replace('/home'); // Nav to home 
-      } else {
-        Alert.alert('Error', data.error || 'Registration failed');
+    const data = await response.json();
+
+    if (response.ok) {
+      Alert.alert("Success", "User registered successfully!");
+
+      try {
+        // Clear old user data inasync
+        await AsyncStorage.multiRemove(["userId", "username", "email"]);
+
+    
+        const user = data.user ? data.user : data;  
+
+        await AsyncStorage.setItem("userId", user.id.toString());
+        await AsyncStorage.setItem("username", user.username);
+        await AsyncStorage.setItem("email", user.email);
+      } catch (e) {
+        console.error("Error saving user data:", e);
       }
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Error', 'Could not connect to server');
+
+      router.replace("/home");
+    } else {
+      Alert.alert("Error", data.error || "Registration failed");
     }
-  };
+  } catch (error) {
+    console.error("Register error:", error);
+    Alert.alert("Error", "Could not connect to server");
+  }
+};
+
 
   return (
     <View style={styles.container}>
@@ -113,7 +132,7 @@ export default function RegisterScreen() {
         <Checkbox
           value={accepted}
           onValueChange={setAccepted}
-          color={ accepted ? '#4B75E9': undefined}
+          color={accepted ? '#4B75E9' : undefined}
         />
         <Text style={styles.agreeText}>
           I agree to the{' '}

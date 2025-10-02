@@ -3,13 +3,13 @@ import React, { useState } from 'react';
 import {
   Alert,
   Dimensions,
+  ScrollView,
   StyleSheet,
   Switch,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-  ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -63,6 +63,11 @@ export default function GuestInfoScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <TouchableOpacity style={styles.backBtn} onPress={() => router.replace('/booking')}>
+                      <View style={styles.backInnerBtn}>
+                        <Icon name="arrow-left" size={22} color="#232323" />
+                      </View>
+                    </TouchableOpacity>
       {/* Header */}
       <Text style={styles.header}>Guest Info</Text>
 
@@ -99,20 +104,22 @@ export default function GuestInfoScreen() {
 
         {/* Phone */}
         <View style={styles.fieldRow}>
-          <TextInput
-            style={[styles.input, { flex: 0.25, marginRight: 6 }]}
-            placeholder="+91"
-            value={countryCode}
-            onChangeText={setCountryCode}
-          />
-          <TextInput
-            style={[styles.input, { flex: 0.75 }]}
-            placeholder="Enter Phone Number"
-            keyboardType="phone-pad"
-            value={phone}
-            onChangeText={setPhone}
-          />
-        </View>
+  <TextInput
+    style={[styles.input, { width: 50, marginRight: 8 }]}
+    placeholder="+91"
+    value={countryCode}
+    onChangeText={setCountryCode}
+    keyboardType="phone-pad"
+    maxLength={4}
+  />
+  <TextInput
+    style={[styles.input, { flex: 1 }]}
+    placeholder="Phone Number"
+    keyboardType="phone-pad"
+    value={phone}
+    onChangeText={setPhone}
+  />
+</View>
       </View>
 
       {/* Switch */}
@@ -145,6 +152,16 @@ const styles = StyleSheet.create({
     paddingTop: height * 0.035,
     alignItems: 'center',
     paddingBottom: height * 0.05,
+  },
+  backBtn: { position: "absolute", top: 18, left: 15, zIndex: 5 },
+  backInnerBtn: {
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    padding: 5,
+    borderColor: "#ffffffff",
+    borderWidth: 1.5,
+    alignItems: "center",
+    justifyContent: "center",
   },
   header: {
     fontSize: width * 0.045,
