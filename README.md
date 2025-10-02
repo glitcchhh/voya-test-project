@@ -1,3 +1,4 @@
+This project is a mobile application built with **React Native** for the frontend, **Express.js** for the backend, and **SQLite** as the database. It demonstrates authentication, state management, API integration, and clean UI/UX practices.
 ## Tech Stacks Used :
 
 ### Frontend
@@ -11,4 +12,4 @@
 - **CORS** – Middleware for cross-origin requests  
 - **SQLite** – Lightweight relational database  
 
-#### App was tested on react native expo web//
+## App was tested on react native expo web//
